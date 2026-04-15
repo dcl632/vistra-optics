@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>購物車 | VISTRA 台灣</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/pages.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+.cart-layout{display:grid;grid-template-columns:1fr 360px;gap:32px;padding:48px 0;}
+.cart-item{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid var(--border-color);align-items:center;}
+.cart-item-img{width:100px;height:80px;background:var(--bg-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--text-light);flex-shrink:0;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-size:15px;font-weight:700;margin-bottom:2px;}
+.cart-item-lens{font-size:12px;color:var(--text-light);}
+.cart-item-price{font-size:17px;font-weight:900;color:var(--pink-primary);}
+.qty-control{display:inline-flex;align-items:center;border:1px solid var(--border-color);border-radius:var(--radius-sm);overflow:hidden;margin-right:16px;}
+.qty-control button{width:32px;height:32px;border:none;background:var(--bg-light);cursor:pointer;font-size:14px;color:var(--text-primary);}
+.qty-control button:hover{background:var(--pink-lighter);}
+.qty-control span{width:36px;text-align:center;font-size:14px;font-weight:700;}
+.cart-item-remove{color:var(--text-light);cursor:pointer;font-size:18px;padding:8px;transition:var(--transition);}
+.cart-item-remove:hover{color:#e53935;}
+.cart-summary{background:var(--bg-light);border-radius:var(--radius-lg);padding:32px;position:sticky;top:80px;}
+.cart-summary h3{font-size:18px;font-weight:700;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border-color);}
+.summary-row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;}
+.summary-row.total{font-size:20px;font-weight:900;padding-top:16px;margin-top:8px;border-top:2px solid var(--text-primary);}
+.summary-row.total .summary-val{color:var(--pink-primary);}
+.summary-row .discount{color:#4CAF50;font-weight:700;}
+.cart-promo{margin:20px 0;display:flex;gap:8px;}
+.cart-promo input{flex:1;padding:10px 14px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;outline:none;}
+.cart-promo input:focus{border-color:var(--pink-primary);}
+.milestone-hint{background:var(--pink-lighter);border-radius:var(--radius-sm);padding:12px 16px;margin:16px 0;font-size:13px;color:var(--pink-dark);}
+.milestone-hint i{margin-right:6px;}
+@media(max-width:768px){.cart-layout{grid-template-columns:1fr;}.cart-summary{position:static;}}
+</style>
+</head>
+<body data-page="">
+<div id="shared-header"></div>
+<main class="main-content">
+<div class="page-banner"><h1><i class="fa-solid fa-bag-shopping"></i> 購物車</h1><p>查看並管理您的商品</p></div>
+<div class="container">
+    <div id="cartContent"></div>
+</div>
+</main>
+<div id="shared-footer"></div>
+<script src="js/components.js"></script>
+<script src="js/cart.js"></script>
+<script>
+function renderCart() {
+    var el = document.getElementById('cartContent');
+    if (cart.length === 0) {
+        el.innerHTML = '<div class="cart-empty"><i class="fa-solid fa-bag-shopping"></i><h2>購物車是空的</h2><p>快去挑選喜歡的眼鏡吧！</p><a href="eyeglasses.html" class="btn btn-primary">前往選購</a></div>';
+        return;
+    }
+    var itemsHtml = '';
+    cart.forEach(function(item) {
+        itemsHtml += '<div class="cart-item"><div class="cart-item-img"><i class="fa-solid fa-glasses"></i></div><div class="cart-item-info"><div class="cart-item-name">'+item.name+'</div><div class="cart-item-lens">'+item.lens+'</div></div><div style="display:flex;align-items:center;gap:16px;"><div class="qty-control"><button onclick="updateQty('+item.id+',-1)">−</button><span>'+item.qty+'</span><button onclick="updateQty('+item.id+',1)">+</button></div><div class="cart-item-price">'+item.price+'</div><span class="cart-item-remove" onclick="removeFromCart('+item.id+')"><i class="fa-solid fa-xmark"></i></span></div></div>';
+    });
+    var total = getCartTotal();
+    var disc = getDiscount(total);
+    var final_total = total - disc;
+    var hintHtml = '';
+    if (total < 2000) {
+        hintHtml = '<div class="milestone-hint"><i class="fa-solid fa-info-circle"></i>再消費 NT$'+(2000-total).toLocaleString()+' 即可折 NT$200！</div>';
+    } else if (total < 3500) {
+        hintHtml = '<div class="milestone-hint"><i class="fa-solid fa-info-circle"></i>再消費 NT$'+(3500-total).toLocaleString()+' 即可折 NT$388！</div>';
+    }
+    var summaryHtml = '<div class="cart-summary"><h3>訂單摘要</h3>'
+        +'<div class="summary-row"><span>小計</span><span>NT$'+total.toLocaleString()+'</span></div>';
+    if (disc > 0) {
+        summaryHtml += '<div class="summary-row"><span>滿額折扣</span><span class="discount">-NT$'+disc+'</span></div>';
+    }
+    summaryHtml += '<div class="summary-row"><span>運費</span><span>免運費</span></div>'
+        +'<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+final_total.toLocaleString()+'</span></div>'
+        +hintHtml
+        +'<div class="cart-promo"><input type="text" placeholder="輸入優惠碼"><button class="btn btn-sm" onclick="showToast(\'優惠碼已套用\')">套用</button></div>'
+        +'<a href="checkout.html" class="btn btn-primary" style="width:100%;padding:14px;text-align:center;display:block;margin-top:16px;">前往結帳</a>'
+        +'<a href="eyeglasses.html" style="display:block;text-align:center;margin-top:12px;font-size:13px;color:var(--text-light);">← 繼續購物</a></div>';
+    el.innerHTML = '<div class="cart-layout"><div class="cart-items-list"><h3 style="font-size:16px;font-weight:700;margin-bottom:8px;">購物車商品 ('+cart.length+')</h3>'+itemsHtml+'</div>'+summaryHtml+'</div>';
+}
+document.addEventListener('DOMContentLoaded', renderCart);
+</script>
+</body></html>

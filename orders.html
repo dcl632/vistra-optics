@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>訂單查詢 | VISTRA 台灣</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/pages.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+.orders-page{padding:48px 0;}
+.order-card{border:1px solid var(--border-color);border-radius:var(--radius-md);margin-bottom:16px;overflow:hidden;}
+.order-card-header{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--bg-light);border-bottom:1px solid var(--border-color);flex-wrap:wrap;gap:8px;}
+.order-id{font-weight:700;color:var(--pink-primary);}
+.order-date{font-size:13px;color:var(--text-light);}
+.order-status{display:inline-block;padding:3px 12px;border-radius:var(--radius-xl);font-size:12px;font-weight:700;background:#fff3e0;color:#f57c00;}
+.order-card-body{padding:20px 24px;}
+.order-card-item{display:flex;align-items:center;gap:16px;padding:8px 0;border-bottom:1px solid var(--border-color);}
+.order-card-item:last-child{border-bottom:none;}
+.order-card-item .item-icon{width:48px;height:48px;background:var(--bg-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:var(--text-light);font-size:20px;}
+.order-card-item .item-name{font-size:14px;font-weight:700;}
+.order-card-item .item-meta{font-size:12px;color:var(--text-light);}
+.order-card-item .item-price{margin-left:auto;font-weight:700;color:var(--pink-primary);}
+.order-card-footer{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-top:1px solid var(--border-color);}
+.order-total{font-size:18px;font-weight:900;color:var(--pink-primary);}
+</style>
+</head>
+<body data-page="">
+<div id="shared-header"></div>
+<main class="main-content">
+<div class="page-banner"><h1>訂單查詢</h1><p>查看您的所有訂單紀錄</p></div>
+<div class="container">
+    <div class="orders-page" id="ordersContent"></div>
+</div>
+</main>
+<div id="shared-footer"></div>
+<script src="js/components.js"></script>
+<script src="js/cart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var el = document.getElementById('ordersContent');
+    if (orders.length === 0) {
+        el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-box-open"></i><h2>尚無訂單</h2><p>您還沒有任何訂單紀錄</p><a href="eyeglasses.html" class="btn btn-primary">前往選購</a></div>';
+        return;
+    }
+    var html = '';
+    orders.slice().reverse().forEach(function(order) {
+        var d = new Date(order.createdAt);
+        var dateStr = d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0');
+        html += '<div class="order-card"><div class="order-card-header"><div><span class="order-id">#'+order.id+'</span> <span class="order-date">'+dateStr+'</span></div><span class="order-status">'+order.status+'</span></div><div class="order-card-body">';
+        order.items.forEach(function(item) {
+            html += '<div class="order-card-item"><div class="item-icon"><i class="fa-solid fa-glasses"></i></div><div><div class="item-name">'+item.name+'</div><div class="item-meta">'+item.lens+' × '+item.qty+'</div></div><div class="item-price">'+item.price+'</div></div>';
+        });
+        html += '</div><div class="order-card-footer"><div><span style="font-size:13px;color:var(--text-light);">訂單金額</span></div><div class="order-total">NT$'+order.total.toLocaleString()+'</div></div></div>';
+    });
+    el.innerHTML = html;
+});
+</script>
+</body></html>

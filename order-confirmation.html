@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>訂單完成 | VISTRA 台灣</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/pages.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+.confirmation{max-width:680px;margin:0 auto;padding:64px 20px;text-align:center;}
+.confirm-icon{width:96px;height:96px;border-radius:50%;background:#e8f5e9;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:48px;color:#4CAF50;}
+.confirm-title{font-size:28px;font-weight:900;margin-bottom:8px;}
+.confirm-sub{font-size:15px;color:var(--text-secondary);margin-bottom:32px;}
+.order-box{background:var(--bg-light);border-radius:var(--radius-lg);padding:32px;text-align:left;margin-bottom:32px;}
+.order-box h3{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;}
+.order-box .detail-row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;border-bottom:1px solid var(--border-color);}
+.order-box .detail-row:last-child{border-bottom:none;}
+.order-box .detail-label{color:var(--text-light);}
+.order-items{margin-top:16px;}
+.order-items .item-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;}
+.order-total-row{display:flex;justify-content:space-between;padding:12px 0;font-size:18px;font-weight:900;border-top:2px solid var(--text-primary);margin-top:8px;}
+.order-total-row .val{color:var(--pink-primary);}
+.confirm-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body data-page="">
+<div id="shared-header"></div>
+<main class="main-content">
+<div class="container">
+    <div class="confirmation">
+        <div class="confirm-icon"><i class="fa-solid fa-check"></i></div>
+        <h1 class="confirm-title">訂單已成立！</h1>
+        <p class="confirm-sub">感謝您的購買，我們將盡快為您出貨。訂單確認信已發送至您的信箱。</p>
+        <div class="order-box" id="orderBox"></div>
+        <div class="confirm-actions">
+            <a href="orders.html" class="btn btn-primary">查看我的訂單</a>
+            <a href="index.html" class="btn btn-outline">回到首頁</a>
+        </div>
+    </div>
+</div>
+</main>
+<div id="shared-footer"></div>
+<script src="js/components.js"></script>
+<script src="js/cart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var order = JSON.parse(localStorage.getItem('vistra_last_order') || 'null');
+    var box = document.getElementById('orderBox');
+    if (!order) { box.innerHTML = '<p>找不到訂單資訊</p>'; return; }
+    var d = new Date(order.createdAt);
+    var dateStr = d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    var html = '<h3>訂單資訊 <span style="color:var(--pink-primary);">#'+order.id+'</span></h3>';
+    html += '<div class="detail-row"><span class="detail-label">訂單日期</span><span>'+dateStr+'</span></div>';
+    html += '<div class="detail-row"><span class="detail-label">收件人</span><span>'+order.shipping.name+'</span></div>';
+    html += '<div class="detail-row"><span class="detail-label">配送地址</span><span>'+order.shipping.city+' '+order.shipping.address+'</span></div>';
+    html += '<div class="detail-row"><span class="detail-label">付款方式</span><span>'+(order.shipping.payment==='credit'?'信用卡':order.shipping.payment==='atm'?'ATM轉帳':order.shipping.payment==='linepay'?'LINE Pay':'貨到付款')+'</span></div>';
+    html += '<div class="order-items"><h4 style="font-size:14px;font-weight:700;margin-bottom:8px;">商品明細</h4>';
+    order.items.forEach(function(item) {
+        html += '<div class="item-row"><span>'+item.name+' × '+item.qty+'</span><span>'+item.price+'</span></div>';
+    });
+    html += '<div class="item-row" style="color:var(--text-light);"><span>小計</span><span>NT$'+order.subtotal.toLocaleString()+'</span></div>';
+    if (order.discount > 0) {
+        html += '<div class="item-row" style="color:#4CAF50;"><span>滿額折扣</span><span>-NT$'+order.discount+'</span></div>';
+    }
+    html += '<div class="order-total-row"><span>合計</span><span class="val">NT$'+order.total.toLocaleString()+'</span></div>';
+    html += '</div>';
+    box.innerHTML = html;
+});
+</script>
+</body></html>

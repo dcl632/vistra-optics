@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>搜尋門市 | VISTRA 台灣</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/pages.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body data-page="stores">
+<div id="shared-header"></div>
+<main class="main-content">
+<div class="page-banner"><h1><i class="fa-solid fa-location-dot"></i> 搜尋門市</h1><p>找到離您最近的 VISTRA 門市</p></div>
+<div class="container">
+    <div class="store-locator">
+        <div class="store-search-bar">
+            <input type="text" class="store-search-input" placeholder="輸入地區、捷運站或門市名稱..." id="storeSearch">
+            <button class="btn btn-primary" onclick="filterStores()">搜尋</button>
+        </div>
+        <div class="filters-left" style="justify-content:center;margin-bottom:32px;flex-wrap:wrap;display:flex;gap:8px;">
+            <button class="filter-btn active" onclick="filterByCity(this,'all')">全部</button>
+            <button class="filter-btn" onclick="filterByCity(this,'台北')">台北</button>
+            <button class="filter-btn" onclick="filterByCity(this,'新北')">新北</button>
+            <button class="filter-btn" onclick="filterByCity(this,'桃園')">桃園</button>
+            <button class="filter-btn" onclick="filterByCity(this,'台中')">台中</button>
+            <button class="filter-btn" onclick="filterByCity(this,'台南')">台南</button>
+            <button class="filter-btn" onclick="filterByCity(this,'高雄')">高雄</button>
+        </div>
+        <div class="store-grid" id="storeGrid">
+            <div class="store-card" data-city="台北"><h3>VISTRA 台北101店</h3><p><i class="fa-solid fa-location-dot" style="color:var(--pink-primary);margin-right:6px;"></i>台北市信義區信義路五段7號4F</p><p><i class="fa-solid fa-phone" style="color:var(--pink-primary);margin-right:6px;"></i>02-8101-8118</p><div class="store-hours"><i class="fa-regular fa-clock"></i> 11:00 - 21:30（週日至週四）/ 11:00 - 22:00（週五、六）</div><a href="#" class="btn btn-sm" onclick="showToast('預約功能開發中')">預約到店</a></div>
+            <div class="store-card" data-city="台北"><h3>VISTRA 信義新光三越A11店</h3><p><i class="fa-solid fa-location-dot" style="color:var(--pink-primary);margin-right:6px;"></i>台北市信義區松壽路11號3F</p><p><i class="fa-solid fa-phone" style="color:var(--pink-primary);margin-right:6px;"></i>02-2723-8118</p><div class="store-hours"><i class="fa-regular fa-clock"></i> 11:00 - 21:30</div><a href="#" class="btn btn-sm" onclick="showToast('預約功能開發中')">預約到店</a></div>
+            <div class="store-card" data-city="台北"><h3>VISTRA 台北站前店</h3><p><i class="fa-solid fa-location-dot" style="color:var(--pink-primary);margin-right:6px;"></i>台北市中正區忠孝西路一段36號</p><p><i class="fa-solid fa-phone" style="color:var(--pink-primary);margin-right:6px;"></i>02-2311-8118</p><div class="store-hours"><i class="fa-regular fa-clock"></i> 11:00 - 21:00</div><a href="#" class="btn btn-sm" onclick="showToast('預約功能開發中')">預約到店</a></div>
+            <div class="store-card" data-city="新北"><h3>VISTRA 板橋大遠百店</h3><p><i class="fa-solid fa-location-dot" style="color:var(--pink-primary);margin-right:6px;"></i>新北市板橋區新站路28號6F</p><p><i class="fa-solid fa-phone" style="color:var(--pink-primary);margin-right:6px;"></i>02-2956-8118</p><div class="store-hours"><i class="fa-regular fa-clock"></i> 11:00 - 21:30</div><a href="#" class="btn btn-sm" onclick="showToast('預約功能開發中')">預約到店</a></div>
+            <div class="store-card" data-city="新北"><h3>VISTRA 林口三井店</h3><p><i class="fa-solid fa-location-dot" style="color:var(--pink-primary);margin-right:6px;"></i>新北市林口區文化三路一段356號</p><p><i class="fa-solid fa-phone" style="color:var(--pink-primary);margin-right:6px;"></i>02-2606-8118</p><div class="store-hours"><i class="fa-regular fa-clock"></i> 11:00 - 21:30</div><a href="#" class="btn btn-sm" onclick="showToast('預約功能開發中')">預約到店</a></div>
+            <div class="store-card" data-city="桃園"><h3>VISTRA 桃園華泰名品城店</h3><p><i class="fa-solid fa-location-dot" style="color:var(--pink-primary);margin-right:6px;"></i>桃園市中壢區春德路189號</p><p><i class="fa-solid fa-phone" style="color:var(--pink-primary);margin-right:6px;"></i>03-287-8118</p><div class="store-hours"><i class="fa-regular fa-clock"></i> 10:00 - 21:00</div><a href="#" class="btn btn-sm" onclick="showToast('預約功能開發中')">預約到店</a></div>
+            <div class="store-card" data-city="台中"><h3>VISTRA 台中大遠百店</h3><p><i class="fa-solid fa-location-dot" style="color:var(--pink-primary);margin-right:6px;"></i>台中市西屯區台灣大道三段251號6F</p><p><i class="fa-solid fa-phone" style="color:var(--pink-primary);margin-right:6px;"></i>04-2254-8118</p><div class="store-hours"><i class="fa-regular fa-clock"></i> 11:00 - 22:00</div><a href="#" class="btn btn-sm" onclick="showToast('預約功能開發中')">預約到店</a></div>
+            <div class="store-card" data-city="台南"><h3>VISTRA 台南新光三越西門店</h3><p><i class="fa-solid fa-location-dot" style="color:var(--pink-primary);margin-right:6px;"></i>台南市中西區西門路一段658號B1</p><p><i class="fa-solid fa-phone" style="color:var(--pink-primary);margin-right:6px;"></i>06-303-8118</p><div class="store-hours"><i class="fa-regular fa-clock"></i> 11:00 - 21:30</div><a href="#" class="btn btn-sm" onclick="showToast('預約功能開發中')">預約到店</a></div>
+            <div class="store-card" data-city="高雄"><h3>VISTRA 高雄漢神巨蛋店</h3><p><i class="fa-solid fa-location-dot" style="color:var(--pink-primary);margin-right:6px;"></i>高雄市左營區博愛二路777號B1</p><p><i class="fa-solid fa-phone" style="color:var(--pink-primary);margin-right:6px;"></i>07-556-8118</p><div class="store-hours"><i class="fa-regular fa-clock"></i> 11:00 - 22:00</div><a href="#" class="btn btn-sm" onclick="showToast('預約功能開發中')">預約到店</a></div>
+        </div>
+    </div>
+</div>
+</main>
+<div id="shared-footer"></div>
+<script src="js/components.js"></script><script src="js/cart.js"></script>
+<script>
+function filterByCity(btn, city) {
+    document.querySelectorAll('.filters-left .filter-btn').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    document.querySelectorAll('.store-card').forEach(function(card) {
+        card.style.display = (city==='all' || card.dataset.city===city) ? '' : 'none';
+    });
+}
+function filterStores() {
+    var q = document.getElementById('storeSearch').value.toLowerCase();
+    document.querySelectorAll('.store-card').forEach(function(card) {
+        card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+}
+</script>
+</body></html>

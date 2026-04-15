@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>個人資料 | VISTRA 台灣</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/pages.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+.profile-form{max-width:500px;}
+.profile-form .form-group{margin-bottom:20px;}
+.account-grid{display:grid;grid-template-columns:240px 1fr;gap:32px;padding:48px 0;}
+.account-sidebar{border-right:1px solid var(--border-color);padding-right:32px;}
+.account-sidebar .user-info{text-align:center;margin-bottom:32px;}
+.account-sidebar .user-avatar{width:80px;height:80px;border-radius:50%;background:var(--pink-lighter);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:32px;color:var(--pink-primary);}
+.account-sidebar .user-name{font-size:18px;font-weight:700;margin-bottom:4px;}
+.account-sidebar .user-email{font-size:13px;color:var(--text-light);}
+.account-menu a{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--radius-sm);font-size:14px;color:var(--text-secondary);transition:var(--transition);margin-bottom:4px;}
+.account-menu a:hover,.account-menu a.active{background:var(--pink-lighter);color:var(--pink-primary);}
+.account-menu a i{width:18px;text-align:center;}
+.account-main h2{font-size:22px;font-weight:700;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border-color);}
+@media(max-width:768px){.account-grid{grid-template-columns:1fr;}.account-sidebar{border-right:none;border-bottom:1px solid var(--border-color);padding-right:0;padding-bottom:24px;}}
+</style>
+</head>
+<body data-page="">
+<div id="shared-header"></div>
+<main class="main-content">
+<div class="page-banner"><h1>個人資料</h1><p>管理您的個人資訊</p></div>
+<div class="container">
+    <div class="account-grid">
+        <aside class="account-sidebar">
+            <div class="user-info">
+                <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="user-name" id="sidebarName">會員</div>
+                <div class="user-email" id="sidebarEmail">-</div>
+            </div>
+            <nav class="account-menu">
+                <a href="account.html"><i class="fa-solid fa-gauge"></i> 總覽</a>
+                <a href="orders.html"><i class="fa-solid fa-box"></i> 訂單查詢</a>
+                <a href="wishlist.html"><i class="fa-regular fa-heart"></i> 收藏清單</a>
+                <a href="account-profile.html" class="active"><i class="fa-solid fa-user-pen"></i> 個人資料</a>
+                <a href="#" onclick="doLogout();return false;"><i class="fa-solid fa-right-from-bracket"></i> 登出</a>
+            </nav>
+        </aside>
+        <div class="account-main">
+            <h2>編輯個人資料</h2>
+            <form class="profile-form" onsubmit="return saveProfile(event)">
+                <div class="form-group"><label>姓名</label><input type="text" id="profName" class="form-input" required></div>
+                <div class="form-group"><label>電子信箱</label><input type="email" id="profEmail" class="form-input" disabled style="background:#f5f5f5;"></div>
+                <div class="form-group"><label>手機號碼</label><input type="tel" id="profPhone" class="form-input" placeholder="09XX-XXX-XXX"></div>
+                <div class="form-group"><label>生日</label><input type="date" id="profBday" class="form-input"></div>
+                <div class="form-group"><label>性別</label>
+                    <select id="profGender" class="form-input"><option value="">請選擇</option><option>男</option><option>女</option><option>不透露</option></select>
+                </div>
+                <button type="submit" class="btn btn-primary">儲存變更</button>
+            </form>
+        </div>
+    </div>
+</div>
+</main>
+<div id="shared-footer"></div>
+<script src="js/components.js"></script><script src="js/cart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (!currentUser) { location.href = 'login.html'; return; }
+    document.getElementById('sidebarName').textContent = currentUser.name;
+    document.getElementById('sidebarEmail').textContent = currentUser.email;
+    document.getElementById('profName').value = currentUser.name || '';
+    document.getElementById('profEmail').value = currentUser.email || '';
+    document.getElementById('profPhone').value = currentUser.phone || '';
+});
+function saveProfile(e) {
+    e.preventDefault();
+    currentUser.name = document.getElementById('profName').value;
+    currentUser.phone = document.getElementById('profPhone').value;
+    saveUser();
+    showToast('個人資料已更新');
+    return false;
+}
+</script>
+</body></html>

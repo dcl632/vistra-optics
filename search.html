@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>搜尋 | VISTRA 台灣</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/pages.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body data-page="">
+<div id="shared-header"></div>
+<main class="main-content">
+<div class="container">
+    <div class="search-page">
+        <h1 style="text-align:center;font-size:28px;font-weight:900;margin-bottom:32px;">搜尋商品</h1>
+        <div class="search-box-large">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="搜尋鏡框、型號、系列..." autofocus onkeyup="doSearch(event)">
+        </div>
+        <div class="search-suggestions" style="margin-bottom:48px;">
+            <span style="font-size:13px;color:var(--text-light);margin-right:8px;">熱門搜尋：</span>
+            <a href="eyeglasses.html">方框眼鏡</a>
+            <a href="eyeglasses.html">VISTRA AIR</a>
+            <a href="sunglasses.html">太陽眼鏡</a>
+            <a href="lenses-functional.html">抗藍光</a>
+            <a href="contact-lenses.html">隱形眼鏡</a>
+            <a href="eyeglasses-kids.html">兒童眼鏡</a>
+        </div>
+        <div id="searchResults"></div>
+    </div>
+</div>
+</main>
+<div id="shared-footer"></div>
+<script src="js/components.js"></script><script src="js/cart.js"></script>
+<script>
+var products = [
+    {name:'NC3019N-1A',brand:'VISTRA',color:'Matte Black',price:'NT$3,590',url:'product-nc3019n.html'},
+    {name:'OF2072T-1A',brand:'VISTRA AIR 2',color:'Brown Demi',price:'NT$4,290',url:'product-of2072t.html'},
+    {name:'OPC2051N-1A',brand:'VISTRA SUN',color:'Clear Gray',price:'NT$4,590',url:'product-opc2051n.html'},
+    {name:'LB1009G-1A',brand:'BELLARA',color:'Rose Gold',price:'NT$4,290',url:'product-lb1009g.html'},
+    {name:'OG2025B-1S',brand:'VISTRA',color:'Navy Blue',price:'NT$3,590',url:'product-detail.html'},
+    {name:'SNP1020X-2A',brand:'VISTRA SNAP',color:'Gunmetal',price:'NT$4,590',url:'product-detail.html'},
+    {name:'AF2088T-0S',brand:'VISTRA AIR',color:'Clear Gray',price:'NT$4,290',url:'product-detail.html'},
+    {name:'MG3031N-2S',brand:'VISTRA',color:'Tortoise',price:'NT$3,590',url:'product-detail.html'},
+];
+function doSearch(e) {
+    var q = document.getElementById('searchInput').value.toLowerCase();
+    var el = document.getElementById('searchResults');
+    if (q.length < 1) { el.innerHTML = ''; return; }
+    var results = products.filter(function(p) {
+        return (p.name+p.brand+p.color).toLowerCase().includes(q);
+    });
+    if (results.length === 0) {
+        el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);"><i class="fa-solid fa-magnifying-glass" style="font-size:40px;margin-bottom:12px;display:block;"></i>找不到符合「'+q+'」的商品</div>';
+        return;
+    }
+    var html = '<h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">搜尋結果 ('+results.length+')</h3><div class="product-grid">';
+    results.forEach(function(p) {
+        html += '<a href="'+p.url+'" class="product-card"><div class="product-card-img"><i class="fa-solid fa-glasses"></i></div><div class="product-card-body"><div class="product-card-brand">'+p.brand+'</div><div class="product-card-name">'+p.name+'</div><div class="product-card-color">'+p.color+'</div><div class="product-card-price">'+p.price+'</div></div></a>';
+    });
+    html += '</div>';
+    el.innerHTML = html;
+}
+</script>
+</body></html>

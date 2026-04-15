@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>會員註冊 | VISTRA 台灣</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/pages.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body data-page="">
+<div id="shared-header"></div>
+<main class="main-content">
+<div class="page-banner"><h1>會員註冊</h1><p>加入會員享受更多優惠與服務</p></div>
+<div class="container">
+    <div class="auth-page">
+        <div class="auth-box">
+            <h2><i class="fa-solid fa-user-plus"></i> 註冊</h2>
+            <form id="registerForm" onsubmit="return handleRegister(event)">
+                <div class="form-group">
+                    <label for="regName">姓名 *</label>
+                    <input type="text" id="regName" class="form-input" placeholder="請輸入姓名" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">電子信箱 *</label>
+                    <input type="email" id="regEmail" class="form-input" placeholder="name@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPhone">手機號碼</label>
+                    <input type="tel" id="regPhone" class="form-input" placeholder="09XX-XXX-XXX">
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">密碼 *</label>
+                    <input type="password" id="regPassword" class="form-input" placeholder="至少6位字元" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="regPassword2">確認密碼 *</label>
+                    <input type="password" id="regPassword2" class="form-input" placeholder="再次輸入密碼" required>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <label style="font-size:13px;display:flex;align-items:flex-start;gap:8px;cursor:pointer;line-height:1.5;">
+                        <input type="checkbox" required style="accent-color:var(--pink-primary);margin-top:3px;">
+                        我已閱讀並同意 <a href="membership-terms.html" style="color:var(--pink-primary);">會員條款</a> 及 <a href="privacy.html" style="color:var(--pink-primary);">隱私權政策</a>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;padding:14px;">註冊</button>
+            </form>
+            <div class="auth-links">
+                已有帳號？ <a href="login.html">立即登入</a>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+<div id="shared-footer"></div>
+<script src="js/components.js"></script>
+<script src="js/cart.js"></script>
+<script>
+function handleRegister(e) {
+    e.preventDefault();
+    var pw1 = document.getElementById('regPassword').value;
+    var pw2 = document.getElementById('regPassword2').value;
+    if (pw1 !== pw2) { showToast('兩次密碼不一致', 'error'); return false; }
+    var ok = doRegister(
+        document.getElementById('regName').value,
+        document.getElementById('regEmail').value,
+        document.getElementById('regPhone').value,
+        pw1
+    );
+    if (ok) { setTimeout(function(){ location.href = 'account.html'; }, 800); }
+    return false;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    if (currentUser) location.href = 'account.html';
+});
+</script>
+</body></html>
