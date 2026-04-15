@@ -301,6 +301,27 @@ img {
     display: block;
 }
 
+/* Mobile open dropdown */
+@media (max-width: 768px) {
+    .nav-item.has-dropdown .dropdown {
+        position: static;
+        opacity: 1;
+        visibility: hidden;
+        transform: none;
+        max-height: 0;
+        overflow: hidden;
+        box-shadow: none;
+        padding: 0;
+        transition: max-height 0.3s ease, visibility 0.3s ease;
+    }
+    .nav-item.has-dropdown.open .dropdown {
+        visibility: visible;
+        max-height: 300px;
+        padding: 4px 0;
+    }
+}
+
+
 /* ========================================
    Hero Section
    ======================================== */

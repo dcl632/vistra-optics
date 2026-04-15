@@ -56,4 +56,39 @@
 </main>
 <div id="shared-footer"></div>
 <script src="js/components.js"></script><script src="js/cart.js"></script>
+
+<script>
+// Color swatch selector
+document.querySelectorAll('.color-dot').forEach(function(dot) {
+    dot.style.cursor = 'pointer';
+    dot.style.border = '2px solid transparent';
+    dot.style.borderRadius = '50%';
+    dot.style.padding = '2px';
+    dot.style.transition = 'all 0.2s ease';
+    if (dot.classList.contains('active')) {
+        dot.style.border = '2px solid #e8728a';
+        dot.style.outline = '2px solid #e8728a';
+        dot.style.outlineOffset = '2px';
+    }
+    dot.addEventListener('click', function() {
+        document.querySelectorAll('.color-dot').forEach(function(d) {
+            d.style.border = '2px solid transparent';
+            d.style.outline = 'none';
+            d.classList.remove('active');
+        });
+        this.classList.add('active');
+        this.style.border = '2px solid #e8728a';
+        this.style.outline = '2px solid #e8728a';
+        this.style.outlineOffset = '2px';
+        // Update selected color text
+        var colorName = this.getAttribute('title') || '';
+        var colorLabel = document.querySelector('.selected-color-name');
+        if (colorLabel) colorLabel.textContent = colorName;
+        // Small bounce animation
+        this.style.transform = 'scale(1.2)';
+        setTimeout(function(el){ el.style.transform = 'scale(1)'; }, 200, this);
+    });
+});
+</script>
+
 </body></html>

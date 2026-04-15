@@ -52,13 +52,17 @@ function handleLogin(e) {
     var email = document.getElementById('loginEmail').value;
     var pw = document.getElementById('loginPassword').value;
     if (doLogin(email, pw)) {
-        setTimeout(function() { location.href = 'account.html'; }, 800);
+        setTimeout(function() { var redir = sessionStorage.getItem('after_login_redirect') || 'account.html';
+        sessionStorage.removeItem('after_login_redirect');
+        location.href = redir; }, 800);
     }
     return false;
 }
 // If already logged in, redirect
 document.addEventListener('DOMContentLoaded', function() {
-    if (currentUser) { location.href = 'account.html'; }
+    if (currentUser) { var redir = sessionStorage.getItem('after_login_redirect') || 'account.html';
+        sessionStorage.removeItem('after_login_redirect');
+        location.href = redir; }
 });
 </script>
 </body></html>

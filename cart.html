@@ -75,7 +75,7 @@ function renderCart() {
         +'<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+final_total.toLocaleString()+'</span></div>'
         +hintHtml
         +'<div class="cart-promo"><input type="text" placeholder="輸入優惠碼"><button class="btn btn-sm" onclick="showToast(\'優惠碼已套用\')">套用</button></div>'
-        +'<a href="checkout.html" class="btn btn-primary" style="width:100%;padding:14px;text-align:center;display:block;margin-top:16px;">前往結帳</a>'
+        +'<button class="btn btn-primary" style="width:100%;padding:14px;font-size:15px;margin-top:16px;" onclick="goToCheckout()">前往結帳</button>'
         +'<a href="eyeglasses.html" style="display:block;text-align:center;margin-top:12px;font-size:13px;color:var(--text-light);">← 繼續購物</a></div>';
     el.innerHTML = '<div class="cart-layout"><div class="cart-items-list"><h3 style="font-size:16px;font-weight:700;margin-bottom:8px;">購物車商品 ('+cart.length+')</h3>'+itemsHtml+'</div>'+summaryHtml+'</div>';
 }

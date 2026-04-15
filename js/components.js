@@ -179,18 +179,42 @@ function initComponents() {
     const hamburgerBtn = document.getElementById('hamburgerBtn');
     const mainNav = document.getElementById('mainNav');
     const overlay = document.getElementById('mobileNavOverlay');
+
+    function closeNav() {
+        hamburgerBtn && hamburgerBtn.classList.remove('active');
+        mainNav && mainNav.classList.remove('active');
+        overlay && overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
     if (hamburgerBtn) {
         hamburgerBtn.addEventListener('click', function() {
-            hamburgerBtn.classList.toggle('active');
-            mainNav.classList.toggle('active');
-            overlay.classList.toggle('active');
-            document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+            const isOpen = mainNav.classList.toggle('active');
+            hamburgerBtn.classList.toggle('active', isOpen);
+            overlay.classList.toggle('active', isOpen);
+            document.body.style.overflow = isOpen ? 'hidden' : '';
         });
-        overlay.addEventListener('click', function() {
-            hamburgerBtn.classList.remove('active');
-            mainNav.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
+
+        // Overlay click = close nav
+        overlay.addEventListener('click', closeNav);
+
+        // Mobile dropdown: tap parent link to toggle sub-menu, don't navigate
+        document.querySelectorAll('.nav-item.has-dropdown > a').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    const li = this.closest('.nav-item');
+                    const isActive = li.classList.contains('open');
+                    // Close all others
+                    document.querySelectorAll('.nav-item.has-dropdown').forEach(function(el) { el.classList.remove('open'); });
+                    if (!isActive) li.classList.add('open');
+                }
+            });
+        });
+
+        // Leaf links (no dropdown parent) close nav on click
+        document.querySelectorAll('.dropdown a, .nav-item:not(.has-dropdown) > a').forEach(function(link) {
+            link.addEventListener('click', closeNav);
         });
     }
 
