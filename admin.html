@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>後台管理 | VISTRA</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans TC',sans-serif;background:#0f0f1a;color:#e0e0e0;min-height:100vh;}
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;}
+.login-box{background:#1a1a2e;border:1px solid #2d2d4e;border-radius:16px;padding:48px;width:380px;text-align:center;}
+.login-box h1{font-size:22px;font-weight:900;color:#fff;margin-bottom:8px;}
+.login-box p{font-size:13px;color:#888;margin-bottom:32px;}
+.form-input{width:100%;padding:12px 16px;background:#12122a;border:1px solid #3d3d6e;border-radius:8px;color:#fff;font-size:14px;font-family:inherit;margin-bottom:12px;outline:none;}
+.form-input:focus{border-color:#7c5cbf;}
+.btn-admin{width:100%;padding:14px;background:linear-gradient(135deg,#7c5cbf,#5c3d9f);border:none;border-radius:8px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-admin:hover{opacity:0.9;}
+.admin-wrap{display:none;padding:32px;}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #2d2d4e;}
+.admin-header h1{font-size:22px;font-weight:900;color:#fff;}
+.admin-header span{font-size:13px;color:#888;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.stat-card{background:#1a1a2e;border:1px solid #2d2d4e;border-radius:12px;padding:20px;}
+.stat-num{font-size:28px;font-weight:900;color:#7c5cbf;}
+.stat-label{font-size:12px;color:#888;margin-top:4px;}
+.filter-bar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-btn{padding:8px 18px;border-radius:20px;border:1px solid #3d3d6e;background:transparent;color:#aaa;cursor:pointer;font-size:13px;font-family:inherit;transition:all 0.2s;}
+.filter-btn.active,.filter-btn:hover{background:#7c5cbf;border-color:#7c5cbf;color:#fff;}
+.search-input{flex:1;min-width:200px;padding:8px 16px;background:#1a1a2e;border:1px solid #3d3d6e;border-radius:20px;color:#fff;font-size:13px;font-family:inherit;outline:none;}
+.order-table{background:#1a1a2e;border:1px solid #2d2d4e;border-radius:12px;overflow:hidden;}
+.order-table table{width:100%;border-collapse:collapse;}
+.order-table th{padding:14px 16px;text-align:left;font-size:12px;color:#888;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;border-bottom:1px solid #2d2d4e;}
+.order-table td{padding:14px 16px;font-size:13px;border-bottom:1px solid #1d1d35;}
+.order-table tr:last-child td{border-bottom:none;}
+.order-table tr:hover td{background:#161628;}
+.badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-processing{background:#fff3e0;color:#f57c00;}
+.badge-shipped{background:#e3f2fd;color:#1565c0;}
+.badge-delivered{background:#e8f5e9;color:#2e7d32;}
+.badge-cancelled{background:#fce4ec;color:#c62828;}
+select.status-select{background:#12122a;border:1px solid #3d3d6e;border-radius:6px;color:#fff;padding:6px 10px;font-size:12px;font-family:inherit;cursor:pointer;outline:none;}
+.btn-update{background:#7c5cbf;border:none;border-radius:6px;color:#fff;padding:6px 14px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:700;}
+.btn-update:hover{opacity:0.8;}
+.empty-state{text-align:center;padding:60px;color:#555;}
+.err{color:#ff6b6b;font-size:13px;margin-top:8px;}
+</style>
+</head>
+<body>
+<!-- Login -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div style="font-size:40px;margin-bottom:16px;">🛡️</div>
+    <h1>VISTRA 後台管理</h1>
+    <p>請輸入管理員密碼登入</p>
+    <input type="password" class="form-input" id="adminPwd" placeholder="管理員密碼" onkeydown="if(event.key==='Enter')doAdminLogin()">
+    <button class="btn-admin" onclick="doAdminLogin()"><i class="fa-solid fa-right-to-bracket"></i> 登入後台</button>
+    <div class="err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- Admin Panel -->
+<div class="admin-wrap" id="adminWrap">
+  <div class="admin-header">
+    <div>
+      <h1><i class="fa-solid fa-gauge" style="color:#7c5cbf;margin-right:8px;"></i>VISTRA 訂單管理</h1>
+      <span id="adminSubtitle"></span>
+    </div>
+    <div style="display:flex;gap:12px;">
+      <a href="index.html" style="color:#888;font-size:13px;text-decoration:none;"><i class="fa-solid fa-arrow-left"></i> 返回網站</a>
+      <button onclick="doAdminLogout()" style="background:transparent;border:1px solid #3d3d6e;border-radius:8px;color:#aaa;padding:8px 16px;cursor:pointer;font-size:13px;font-family:inherit;">登出</button>
+    </div>
+  </div>
+
+  <div class="stats" id="statsRow"></div>
+
+  <div class="filter-bar">
+    <input type="text" class="search-input" id="searchInput" placeholder="🔍 搜尋訂單編號或客戶..." oninput="renderOrders()">
+    <button class="filter-btn active" onclick="setFilter('all',this)">全部</button>
+    <button class="filter-btn" onclick="setFilter('處理中',this)">處理中</button>
+    <button class="filter-btn" onclick="setFilter('已出貨',this)">已出貨</button>
+    <button class="filter-btn" onclick="setFilter('已送達',this)">已送達</button>
+    <button class="filter-btn" onclick="setFilter('已取消',this)">已取消</button>
+  </div>
+
+  <div class="order-table">
+    <table>
+      <thead>
+        <tr>
+          <th>訂單編號</th>
+          <th>日期</th>
+          <th>客戶</th>
+          <th>商品</th>
+          <th>金額</th>
+          <th>狀態</th>
+          <th>更新</th>
+        </tr>
+      </thead>
+      <tbody id="orderTableBody"></tbody>
+    </table>
+    <div class="empty-state" id="emptyState" style="display:none;"><i class="fa-solid fa-box-open" style="font-size:32px;margin-bottom:12px;display:block;"></i>沒有符合的訂單</div>
+  </div>
+</div>
+
+<script src="js/cart.js?v=3"></script>
+<script>
+var ADMIN_PASSWORD = 'vistra2026';
+var currentFilter = 'all';
+
+function doAdminLogin() {
+  var pwd = document.getElementById('adminPwd').value;
+  if(pwd === ADMIN_PASSWORD) {
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('adminWrap').style.display = 'block';
+    renderStats();
+    renderOrders();
+  } else {
+    document.getElementById('loginErr').textContent = '密碼錯誤，請重試';
+  }
+}
+
+function doAdminLogout() {
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('adminWrap').style.display = 'none';
+  document.getElementById('adminPwd').value = '';
+  document.getElementById('loginErr').textContent = '';
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderOrders();
+}
+
+function renderStats() {
+  var allOrders = JSON.parse(localStorage.getItem('vistra_orders')||'[]');
+  var total = allOrders.length;
+  var totalAmt = allOrders.reduce(function(s,o){return s+(o.total||0);},0);
+  var processing = allOrders.filter(function(o){return o.status==='處理中';}).length;
+  var delivered = allOrders.filter(function(o){return o.status==='已送達';}).length;
+  document.getElementById('statsRow').innerHTML =
+    '<div class="stat-card"><div class="stat-num">'+total+'</div><div class="stat-label">總訂單數</div></div>'+
+    '<div class="stat-card"><div class="stat-num">'+processing+'</div><div class="stat-label">處理中</div></div>'+
+    '<div class="stat-card"><div class="stat-num">'+delivered+'</div><div class="stat-label">已送達</div></div>'+
+    '<div class="stat-card"><div class="stat-num" style="font-size:20px;">NT$'+totalAmt.toLocaleString()+'</div><div class="stat-label">總營業額</div></div>';
+  document.getElementById('adminSubtitle').textContent = '共 '+total+' 筆訂單 · 最後更新 '+new Date().toLocaleString('zh-TW');
+}
+
+function renderOrders() {
+  var allOrders = JSON.parse(localStorage.getItem('vistra_orders')||'[]');
+  var q = (document.getElementById('searchInput').value||'').toLowerCase();
+  var filtered = allOrders.slice().reverse().filter(function(o){
+    if(currentFilter !== 'all' && o.status !== currentFilter) return false;
+    if(q && o.id.toLowerCase().indexOf(q)<0 && (o.user||'').toLowerCase().indexOf(q)<0 && ((o.shippingInfo||o.shipping||{}).name||'').toLowerCase().indexOf(q)<0) return false;
+    return true;
+  });
+  var tbody = document.getElementById('orderTableBody');
+  var empty = document.getElementById('emptyState');
+  if(filtered.length===0){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  var badgeMap={'處理中':'badge-processing','已出貨':'badge-shipped','已送達':'badge-delivered','已取消':'badge-cancelled'};
+  tbody.innerHTML = filtered.map(function(order){
+    var d=new Date(order.createdAt);
+    var dateStr=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
+    var si=order.shippingInfo||order.shipping||{};
+    var customerName=(si.name||order.user||'-');
+    var itemNames=(order.items||[]).map(function(i){return i.name;}).join(', ');
+    var badge=badgeMap[order.status]||'badge-processing';
+    return '<tr>'+
+      '<td style="font-weight:700;color:#a78fe0;font-size:12px;">#'+order.id+'</td>'+
+      '<td style="color:#999;">'+dateStr+'</td>'+
+      '<td>'+customerName+'</td>'+
+      '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#ccc;" title="'+itemNames+'">'+itemNames+'</td>'+
+      '<td style="font-weight:700;color:#a78fe0;">NT$'+(order.total||0).toLocaleString()+'</td>'+
+      '<td><span class="badge '+badge+'">'+order.status+'</span></td>'+
+      '<td>'+
+        '<div style="display:flex;gap:6px;align-items:center;">'+
+          '<select class="status-select" id="sel_'+order.id+'">'+
+            ['處理中','已出貨','已送達','已取消'].map(function(s){
+              return '<option value="'+s+'"'+(s===order.status?' selected':'')+'>'+s+'</option>';
+            }).join('')+
+          '</select>'+
+          '<button class="btn-update" onclick="updateStatus(\''+order.id+'\')">更新</button>'+
+        '</div>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+}
+
+function updateStatus(orderId) {
+  var sel = document.getElementById('sel_'+orderId);
+  var newStatus = sel.value;
+  var allOrders = JSON.parse(localStorage.getItem('vistra_orders')||'[]');
+  var order = allOrders.find(function(o){return o.id===orderId;});
+  if(order){
+    order.status = newStatus;
+    localStorage.setItem('vistra_orders', JSON.stringify(allOrders));
+    renderStats();
+    renderOrders();
+    // Flash feedback
+    sel.closest('tr').style.background='#1e3a1e';
+    setTimeout(function(){sel.closest('tr').style.background='';},800);
+  }
+}
+</script>
+</body>
+</html>
