@@ -139,8 +139,8 @@
 </div>
 </main>
 <div id="shared-footer"></div>
-<script src="js/components.js"></script>
-<script src="js/cart.js"></script>
+<script src="js/components.js?v=2"></script>
+<script src="js/cart.js?v=2"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     if (cart.length === 0) { location.href = 'cart.html'; return; }
@@ -176,7 +176,7 @@ function applyPromo() {
     var msg = document.getElementById('promoMsg');
     if(code === '999723') {
         employeeDiscountActive = true;
-        msg.textContent = '✅ 已套用員工 8 折優惠！';
+        msg.textContent = '✅ 已套用員工 85 折優惠！';
         msg.style.color = '#4CAF50';
         msg.style.display = 'block';
         renderSummary();
@@ -216,9 +216,9 @@ function renderSummary() {
     if (disc > 0) html += '<div class="summary-row"><span>滿額折扣</span><span class="discount">-NT$'+disc+'</span></div>';
     
     if (employeeDiscountActive) {
-        var empSave = Math.round(targetTotal * 0.2);
+        var empSave = Math.round(targetTotal * 0.15);
         targetTotal -= empSave;
-        html += '<div class="summary-row" style="color:#4CAF50;"><span>員工優惠 (8折)</span><span>-NT$'+empSave.toLocaleString()+'</span></div>';
+        html += '<div class="summary-row" style="color:#4CAF50;"><span>員工優惠 (85折)</span><span>-NT$'+empSave.toLocaleString()+'</span></div>';
     }
     
     html += '<div class="summary-row"><span>運費</span><span>免運費</span></div>';

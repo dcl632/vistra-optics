@@ -186,7 +186,7 @@ function placeOrder(shippingInfo, applyEmpDiscount) {
     let finalTotal = total - discount;
     
     if (applyEmpDiscount) {
-        let empSave = Math.round(finalTotal * 0.2);
+        let empSave = Math.round(finalTotal * 0.15);
         discount += empSave;
         finalTotal -= empSave;
     }
