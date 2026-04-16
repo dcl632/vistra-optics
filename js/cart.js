@@ -8,8 +8,12 @@
     var hasdemo = users.some(function(u) { return u.email === 'demo@vistra.tw'; });
     if (!hasdemo) {
         users.unshift({ name: 'Demo 用戶', email: 'demo@vistra.tw', phone: '0912-000-000', password: 'demo1234' });
-        localStorage.setItem('vistra_users', JSON.stringify(users));
     }
+    var hasjour = users.some(function(u) { return u.email === 'jour9927@gmail.com'; });
+    if (!hasjour) {
+        users.unshift({ name: 'Jour', email: 'jour9927@gmail.com', phone: '', password: 'Aa112233' });
+    }
+    localStorage.setItem('vistra_users', JSON.stringify(users));
 })();
 
 // Initialize from localStorage
