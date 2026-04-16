@@ -63,7 +63,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Items
     html += '<div class="detail-section"><h3>商品明細</h3><div class="item-list">';
     order.items.forEach(function(item) {
-        html += '<div class="item-row"><div class="item-icon"><i class="fa-solid fa-glasses"></i></div><div style="flex:1;"><div style="font-weight:700;font-size:14px;">'+item.name+'</div><div style="font-size:12px;color:var(--text-light);">'+item.lens+' × '+item.qty+'</div></div><div style="font-weight:700;color:var(--pink-primary);">'+item.price+'</div></div>';
+        var imgUrl = '';
+        if(item.name.indexOf('LUCENT')>-1 || item.name.indexOf('AURA ICE')>-1) imgUrl = 'images/owndays/aura-ice.png';
+        else if(item.name.indexOf('NC3019N')>-1 || item.name.indexOf('OR2071N')>-1) imgUrl = 'images/owndays/eyeglasses_01.webp';
+        else if(item.name.indexOf('OF2072T')>-1) imgUrl = 'images/owndays/eyeglasses_02.webp';
+        else if(item.name.indexOf('LB1009G')>-1) imgUrl = 'images/owndays/eyeglasses_03.webp';
+        else if(item.name.indexOf('OG2025B')>-1) imgUrl = 'images/owndays/eyeglasses_04.webp';
+        else if(item.name.indexOf('SNP1020X')>-1) imgUrl = 'images/owndays/eyeglasses_05.webp';
+        else if(item.name.indexOf('AF2088T')>-1) imgUrl = 'images/owndays/eyeglasses_06.webp';
+        else if(item.name.indexOf('MG3031N')>-1) imgUrl = 'images/owndays/eyeglasses_07.webp';
+        else if(item.name.indexOf('PL3050N')>-1) imgUrl = 'images/owndays/eyeglasses_08.webp';
+        else if(item.name.indexOf('AURA')>-1 || item.name.indexOf('LUMINA')>-1) imgUrl = 'images/owndays/aura-ice.png';
+        var imgHtml = imgUrl ? '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;background:transparent;border-radius:4px;">' : '<i class="fa-solid fa-glasses"></i>';
+
+        html += '<div class="item-row"><div class="item-icon" style="padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">'+imgHtml+'</div><div style="flex:1;"><div style="font-weight:700;font-size:14px;">'+item.name+'</div><div style="font-size:12px;color:var(--text-light);">'+item.lens+' &times; '+item.qty+'</div></div><div style="font-weight:700;color:var(--pink-primary);">'+item.price+'</div></div>';"><div style="font-weight:700;font-size:14px;">'+item.name+'</div><div style="font-size:12px;color:var(--text-light);">'+item.lens+' × '+item.qty+'</div></div><div style="font-weight:700;color:var(--pink-primary);">'+item.price+'</div></div>';
     });
     html += '</div><div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px;"><div class="detail-row"><span>小計</span><span>NT$'+order.subtotal.toLocaleString()+'</span></div>';
     if (order.discount > 0) html += '<div class="detail-row"><span>折扣</span><span style="color:#4CAF50;">-NT$'+order.discount+'</span></div>';

@@ -79,7 +79,20 @@ function renderWishlist() {
     }
     var html = '<div class="wishlist-grid">';
     wishlist.forEach(function(item) {
-        html += '<div class="wishlist-card"><button class="remove-wish" onclick="removeFromWishlist('+item.id+')"><i class="fa-solid fa-xmark"></i></button><div class="wish-icon"><i class="fa-solid fa-glasses"></i></div><div class="wish-name">'+item.name+'</div><div class="wish-price">'+item.price+'</div><button class="btn btn-sm" onclick="addToCart(\''+item.name+'\',\''+item.price+'\')">加入購物車</button></div>';
+        var imgUrl = '';
+        if(item.name.indexOf('LUCENT')>-1 || item.name.indexOf('AURA ICE')>-1) imgUrl = 'images/owndays/aura-ice.png';
+        else if(item.name.indexOf('NC3019N')>-1 || item.name.indexOf('OR2071N')>-1) imgUrl = 'images/owndays/eyeglasses_01.webp';
+        else if(item.name.indexOf('OF2072T')>-1) imgUrl = 'images/owndays/eyeglasses_02.webp';
+        else if(item.name.indexOf('LB1009G')>-1) imgUrl = 'images/owndays/eyeglasses_03.webp';
+        else if(item.name.indexOf('OG2025B')>-1) imgUrl = 'images/owndays/eyeglasses_04.webp';
+        else if(item.name.indexOf('SNP1020X')>-1) imgUrl = 'images/owndays/eyeglasses_05.webp';
+        else if(item.name.indexOf('AF2088T')>-1) imgUrl = 'images/owndays/eyeglasses_06.webp';
+        else if(item.name.indexOf('MG3031N')>-1) imgUrl = 'images/owndays/eyeglasses_07.webp';
+        else if(item.name.indexOf('PL3050N')>-1) imgUrl = 'images/owndays/eyeglasses_08.webp';
+        else if(item.name.indexOf('AURA')>-1 || item.name.indexOf('LUMINA')>-1) imgUrl = 'images/owndays/aura-ice.png';
+        var imgHtml = imgUrl ? '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;background:transparent;border-radius:4px;">' : '<i class="fa-solid fa-glasses"></i>';
+
+        html += '<div class="wishlist-card"><button class="remove-wish" onclick="removeFromWishlist('+item.id+')"><i class="fa-solid fa-xmark"></i></button><div class="wish-icon" style="padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">'+imgHtml+'</div><div class="wish-name">'+item.name+'</div><div class="wish-price">'+item.price+'</div><button class="btn btn-sm" onclick="addToCart(\''+item.name+'\',\''+item.price+'\')">加入購物車</button></div>';
     });
     html += '</div>';
     el.innerHTML = html;

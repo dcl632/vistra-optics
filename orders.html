@@ -83,7 +83,20 @@ document.addEventListener('DOMContentLoaded', function() {
         var dateStr = d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0');
         html += '<div class="order-card"><div class="order-card-header"><div><span class="order-id">#'+order.id+'</span> <span class="order-date">'+dateStr+'</span></div><span class="order-status">'+order.status+'</span></div><div class="order-card-body">';
         order.items.forEach(function(item) {
-            html += '<div class="order-card-item"><div class="item-icon"><i class="fa-solid fa-glasses"></i></div><div><div class="item-name">'+item.name+'</div><div class="item-meta">'+item.lens+' × '+item.qty+'</div></div><div class="item-price">'+item.price+'</div></div>';
+        var imgUrl = '';
+        if(item.name.indexOf('LUCENT')>-1 || item.name.indexOf('AURA ICE')>-1) imgUrl = 'images/owndays/aura-ice.png';
+        else if(item.name.indexOf('NC3019N')>-1 || item.name.indexOf('OR2071N')>-1) imgUrl = 'images/owndays/eyeglasses_01.webp';
+        else if(item.name.indexOf('OF2072T')>-1) imgUrl = 'images/owndays/eyeglasses_02.webp';
+        else if(item.name.indexOf('LB1009G')>-1) imgUrl = 'images/owndays/eyeglasses_03.webp';
+        else if(item.name.indexOf('OG2025B')>-1) imgUrl = 'images/owndays/eyeglasses_04.webp';
+        else if(item.name.indexOf('SNP1020X')>-1) imgUrl = 'images/owndays/eyeglasses_05.webp';
+        else if(item.name.indexOf('AF2088T')>-1) imgUrl = 'images/owndays/eyeglasses_06.webp';
+        else if(item.name.indexOf('MG3031N')>-1) imgUrl = 'images/owndays/eyeglasses_07.webp';
+        else if(item.name.indexOf('PL3050N')>-1) imgUrl = 'images/owndays/eyeglasses_08.webp';
+        else if(item.name.indexOf('AURA')>-1 || item.name.indexOf('LUMINA')>-1) imgUrl = 'images/owndays/aura-ice.png';
+        var imgHtml = imgUrl ? '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;background:transparent;border-radius:4px;">' : '<i class="fa-solid fa-glasses"></i>';
+
+            html += '<div class="order-card-item"><div class="item-icon" style="padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">'+imgHtml+'</div><div><div class="item-name">'+item.name+'</div><div class="item-meta">'+item.lens+' &times; '+item.qty+'</div></div><div class="item-price">'+item.price+'</div></div>';
         });
         html += '</div><div class="order-card-footer"><div><span style="font-size:13px;color:var(--text-light);">訂單金額</span></div><div class="order-total">NT$'+order.total.toLocaleString()+'</div></div></div>';
     });

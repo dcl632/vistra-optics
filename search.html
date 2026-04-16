@@ -56,7 +56,22 @@ function doSearch(e) {
     }
     var html = '<h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">搜尋結果 ('+results.length+')</h3><div class="product-grid">';
     results.forEach(function(p) {
-        html += '<a href="'+p.url+'" class="product-card"><div class="product-card-img"><i class="fa-solid fa-glasses"></i></div><div class="product-card-body"><div class="product-card-brand">'+p.brand+'</div><div class="product-card-name">'+p.name+'</div><div class="product-card-color">'+p.color+'</div><div class="product-card-price">'+p.price+'</div></div></a>';
+        var item = {name: p.name};
+
+        var imgUrl = '';
+        if(item.name.indexOf('LUCENT')>-1 || item.name.indexOf('AURA ICE')>-1) imgUrl = 'images/owndays/aura-ice.png';
+        else if(item.name.indexOf('NC3019N')>-1 || item.name.indexOf('OR2071N')>-1) imgUrl = 'images/owndays/eyeglasses_01.webp';
+        else if(item.name.indexOf('OF2072T')>-1) imgUrl = 'images/owndays/eyeglasses_02.webp';
+        else if(item.name.indexOf('LB1009G')>-1) imgUrl = 'images/owndays/eyeglasses_03.webp';
+        else if(item.name.indexOf('OG2025B')>-1) imgUrl = 'images/owndays/eyeglasses_04.webp';
+        else if(item.name.indexOf('SNP1020X')>-1) imgUrl = 'images/owndays/eyeglasses_05.webp';
+        else if(item.name.indexOf('AF2088T')>-1) imgUrl = 'images/owndays/eyeglasses_06.webp';
+        else if(item.name.indexOf('MG3031N')>-1) imgUrl = 'images/owndays/eyeglasses_07.webp';
+        else if(item.name.indexOf('PL3050N')>-1) imgUrl = 'images/owndays/eyeglasses_08.webp';
+        else if(item.name.indexOf('AURA')>-1 || item.name.indexOf('LUMINA')>-1) imgUrl = 'images/owndays/aura-ice.png';
+        var imgHtml = imgUrl ? '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;background:transparent;border-radius:4px;">' : '<i class="fa-solid fa-glasses"></i>';
+
+        html += '<a href="'+p.url+'" class="product-card"><div class="product-card-img" style="padding:0;overflow:hidden;">'+imgHtml+'</div><div class="product-card-body"><div class="product-card-brand">'+p.brand+'</div><div class="product-card-name">'+p.name+'</div><div class="product-card-color">'+p.color+'</div><div class="product-card-price">'+p.price+'</div></div></a>';
     });
     html += '</div>';
     el.innerHTML = html;
