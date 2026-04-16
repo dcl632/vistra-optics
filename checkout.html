@@ -117,13 +117,7 @@
                         <div class="form-group"><label>安全碼</label><input type="text" class="form-input" placeholder="CVV" maxlength="4"></div>
                     </div>
                 </div>
-                <div id="paypalDemoBox" class="checkout-section" style="display:none;">
-                    <div style="background:linear-gradient(135deg,#003087,#009cde);border-radius:12px;padding:24px;text-align:center;color:white;">
-                        <div style="font-size:32px;margin-bottom:12px;"><i class="fa-brands fa-paypal"></i></div>
-                        <p style="font-size:14px;opacity:0.9;margin-bottom:4px;">🔒 測試模式 — PayPal 安全付款</p>
-                        <p style="font-size:12px;opacity:0.7;">按下確認後將直接完成訂單（Demo 模式，不會實際扣款）</p>
-                    </div>
-                </div>
+
                 <button type="submit" class="btn btn-primary btn-lg" style="width:100%;padding:16px;font-size:16px;margin-top:8px;">
                     <i class="fa-solid fa-lock"></i> 確認下單
                 </button>
@@ -171,7 +165,20 @@ function renderSummary() {
     var disc = getDiscount(total);
     var html = '<h3>訂單摘要</h3>';
     cart.forEach(function(item) {
-        html += '<div class="order-item"><div class="order-item-img"><i class="fa-solid fa-glasses"></i></div><div><div class="order-item-name">'+item.name+'</div><div class="order-item-meta">'+item.lens+' × '+item.qty+'</div></div><div style="margin-left:auto;font-weight:700;">'+item.price+'</div></div>';
+        var imgUrl = '';
+        if(item.name.indexOf('LUCENT')>-1 || item.name.indexOf('AURA ICE')>-1) imgUrl = 'images/owndays/aura-ice.png';
+        else if(item.name.indexOf('NC3019N')>-1 || item.name.indexOf('OR2071N')>-1) imgUrl = 'images/owndays/eyeglasses_01.webp';
+        else if(item.name.indexOf('OF2072T')>-1) imgUrl = 'images/owndays/eyeglasses_02.webp';
+        else if(item.name.indexOf('LB1009G')>-1) imgUrl = 'images/owndays/eyeglasses_03.webp';
+        else if(item.name.indexOf('OG2025B')>-1) imgUrl = 'images/owndays/eyeglasses_04.webp';
+        else if(item.name.indexOf('SNP1020X')>-1) imgUrl = 'images/owndays/eyeglasses_05.webp';
+        else if(item.name.indexOf('AF2088T')>-1) imgUrl = 'images/owndays/eyeglasses_06.webp';
+        else if(item.name.indexOf('MG3031N')>-1) imgUrl = 'images/owndays/eyeglasses_07.webp';
+        else if(item.name.indexOf('PL3050N')>-1) imgUrl = 'images/owndays/eyeglasses_08.webp';
+        
+        var imgHtml = imgUrl ? '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;background:transparent;">' : '<i class="fa-solid fa-glasses"></i>';
+        
+        html += '<div class="order-item"><div class="order-item-img" style="overflow:hidden;">'+imgHtml+'</div><div><div class="order-item-name">'+item.name+'</div><div class="order-item-meta">'+item.lens+' × '+item.qty+'</div></div><div style="margin-left:auto;font-weight:700;">'+item.price+'</div></div>';
     });
     html += '<div style="margin-top:16px;"><div class="summary-row"><span>小計</span><span>NT$'+total.toLocaleString()+'</span></div>';
     if (disc > 0) html += '<div class="summary-row"><span>滿額折扣</span><span class="discount">-NT$'+disc+'</span></div>';

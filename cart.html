@@ -55,7 +55,20 @@ function renderCart() {
     }
     var itemsHtml = '';
     cart.forEach(function(item) {
-        itemsHtml += '<div class="cart-item"><div class="cart-item-img"><i class="fa-solid fa-glasses"></i></div><div class="cart-item-info"><div class="cart-item-name">'+item.name+'</div><div class="cart-item-lens">'+item.lens+'</div></div><div style="display:flex;align-items:center;gap:16px;"><div class="qty-control"><button onclick="updateQty('+item.id+',-1)">−</button><span>'+item.qty+'</span><button onclick="updateQty('+item.id+',1)">+</button></div><div class="cart-item-price">'+item.price+'</div><span class="cart-item-remove" onclick="removeFromCart('+item.id+')"><i class="fa-solid fa-xmark"></i></span></div></div>';
+        var imgUrl = '';
+        if(item.name.indexOf('LUCENT')>-1 || item.name.indexOf('AURA ICE')>-1) imgUrl = 'images/owndays/aura-ice.png';
+        else if(item.name.indexOf('NC3019N')>-1 || item.name.indexOf('OR2071N')>-1) imgUrl = 'images/owndays/eyeglasses_01.webp';
+        else if(item.name.indexOf('OF2072T')>-1) imgUrl = 'images/owndays/eyeglasses_02.webp';
+        else if(item.name.indexOf('LB1009G')>-1) imgUrl = 'images/owndays/eyeglasses_03.webp';
+        else if(item.name.indexOf('OG2025B')>-1) imgUrl = 'images/owndays/eyeglasses_04.webp';
+        else if(item.name.indexOf('SNP1020X')>-1) imgUrl = 'images/owndays/eyeglasses_05.webp';
+        else if(item.name.indexOf('AF2088T')>-1) imgUrl = 'images/owndays/eyeglasses_06.webp';
+        else if(item.name.indexOf('MG3031N')>-1) imgUrl = 'images/owndays/eyeglasses_07.webp';
+        else if(item.name.indexOf('PL3050N')>-1) imgUrl = 'images/owndays/eyeglasses_08.webp';
+        
+        var imgHtml = imgUrl ? '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;background:transparent;border-radius:var(--radius-sm);">' : '<i class="fa-solid fa-glasses"></i>';
+        
+        itemsHtml += '<div class="cart-item"><div class="cart-item-img" style="padding:0;overflow:hidden;">'+imgHtml+'</div><div class="cart-item-info"><div class="cart-item-name">'+item.name+'</div><div class="cart-item-lens">'+item.lens+'</div></div><div style="display:flex;align-items:center;gap:16px;"><div class="qty-control"><button onclick="updateQty('+item.id+',-1)">−</button><span>'+item.qty+'</span><button onclick="updateQty('+item.id+',1)">+</button></div><div class="cart-item-price">'+item.price+'</div><span class="cart-item-remove" onclick="removeFromCart('+item.id+')"><i class="fa-solid fa-xmark"></i></span></div></div>';
     });
     var total = getCartTotal();
     var disc = getDiscount(total);
