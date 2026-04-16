@@ -115,9 +115,26 @@
                         </label>
                     </div>
                 </div>
+                <div class="checkout-section">
+                    <h3><span class="step-num">4</span> 加購選擇 <span style="font-size:12px;font-weight:400;color:var(--text-light);margin-left:8px;">（可不選）</span></h3>
+                    <div class="payment-options" style="flex-direction:column;gap:8px;">
+                        <label class="payment-option selected" id="addon-none" style="cursor:pointer;">
+                            <input type="radio" name="addonChoice" value="0" data-label="不加購收納盒" checked onchange="onAddonChange(this)">
+                            <div class="pay-icon"><i class="fa-solid fa-xmark"></i></div>
+                            <div><div class="pay-name">不加購收納盒</div><div class="pay-desc">維持原始配件內容</div></div>
+                            <div style="margin-left:auto;font-weight:700;">+NT$0</div>
+                        </label>
+                        <label class="payment-option" id="addon-premium-case" style="cursor:pointer;">
+                            <input type="radio" name="addonChoice" value="999" data-label="高級皮質收納盒" onchange="onAddonChange(this)">
+                            <div class="pay-icon"><i class="fa-solid fa-box-archive"></i></div>
+                            <div><div class="pay-name">高級皮質收納盒</div><div class="pay-desc">質感皮革外層，耐磨防刮，旅行收納更安心</div></div>
+                            <div style="margin-left:auto;font-weight:700;">+NT$999</div>
+                        </label>
+                    </div>
+                </div>
                 <!-- Step 4: Payment -->
                 <div class="checkout-section">
-                    <h3><span class="step-num">4</span> 付款方式</h3>
+                    <h3><span class="step-num">5</span> 付款方式</h3>
                     <div class="payment-options">
                         <label class="payment-option selected" id="opt-credit">
                             <input type="radio" name="payment" value="credit" checked onchange="onPaymentChange(this)">
@@ -129,7 +146,7 @@
                             <div class="pay-icon" style="width:50px;background:transparent;padding:0;display:flex;align-items:center;justify-content:flex-start;">
                                 <img src="images/paypal-logo.svg?v=2" style="height:22px;width:auto;object-fit:contain;display:block;">
                             </div>
-                            <div><div class="pay-name">PayPal325*</div><div class="pay-desc">全球通用，安全付款</div></div>
+                            <div><div class="pay-name">PayPal</div><div class="pay-desc">全球通用，安全付款</div></div>
                         </label>
                         <label class="payment-option" id="opt-atm">
                             <input type="radio" name="payment" value="atm" onchange="onPaymentChange(this)">
@@ -149,7 +166,7 @@
                     </div>
                 </div>
                 <div id="creditCardFields" class="checkout-section">
-                    <h3><span class="step-num">5</span> 信用卡資訊</h3>
+                    <h3><span class="step-num">6</span> 信用卡資訊</h3>
                     <div class="form-group"><label>卡號</label><input type="text" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19"></div>
                     <div class="form-row">
                         <div class="form-group"><label>有效期限</label><input type="text" class="form-input" placeholder="MM/YY"></div>
@@ -211,6 +228,8 @@ function onPaymentChange(radio) {
 var employeeDiscountActive = false;
 var currentLensPrice = 0;
 var currentLensLabel = '僅鏡框（不配鏡片）';
+var currentAddonPrice = 0;
+var currentAddonLabel = '不加購收納盒';
 
 function onLensChange(radio) {
     currentLensPrice = parseInt(radio.value) || 0;
@@ -220,12 +239,20 @@ function onLensChange(radio) {
     renderSummary();
 }
 
+function onAddonChange(radio) {
+    currentAddonPrice = parseInt(radio.value) || 0;
+    currentAddonLabel = radio.getAttribute('data-label') || '不加購收納盒';
+    document.querySelectorAll('[id^="addon-"]').forEach(function(el){ el.classList.remove('selected'); });
+    radio.closest('.payment-option').classList.add('selected');
+    renderSummary();
+}
+
 function applyPromo() {
     var code = document.getElementById('promoInput').value.trim();
     var msg = document.getElementById('promoMsg');
     if(code === '999723') {
         employeeDiscountActive = true;
-        msg.textContent = '✅ 已套用員工 85 折優惠！';
+        msg.textContent = '✅ 已套用員工 7.5 折優惠！';
         msg.style.color = '#4CAF50';
         msg.style.display = 'block';
         renderSummary();
@@ -242,7 +269,8 @@ function renderSummary() {
     var el = document.getElementById('orderSummary');
     var frameTotal = getCartTotal();
     var lensPrice = currentLensPrice;
-    var subtotal = frameTotal + lensPrice;
+    var addonPrice = currentAddonPrice;
+    var subtotal = frameTotal + lensPrice + addonPrice;
     var SHIPPING = 200;
     var disc = getDiscount(subtotal);
     var targetTotal = subtotal - disc + SHIPPING;
@@ -267,13 +295,16 @@ function renderSummary() {
     if (lensPrice > 0) {
         html += '<div class="summary-row"><span>鏡片費用（'+currentLensLabel+'）</span><span>+NT$'+lensPrice.toLocaleString()+'</span></div>';
     }
+    if (addonPrice > 0) {
+        html += '<div class="summary-row"><span>加購項目（'+currentAddonLabel+'）</span><span>+NT$'+addonPrice.toLocaleString()+'</span></div>';
+    }
     if (disc > 0) html += '<div class="summary-row"><span>滿額折扣</span><span class="discount">-NT$'+disc.toLocaleString()+'</span></div>';
     html += '<div class="summary-row"><span>運費</span><span>NT$'+SHIPPING+'</span></div>';
     html += '<div class="summary-row" style="color:#4CAF50;"><span>運費折抵</span><span>-NT$'+SHIPPING+'</span></div>';
     if (employeeDiscountActive) {
-        var empSave = Math.round(targetTotal * 0.15);
+        var empSave = Math.round(targetTotal * 0.25);
         targetTotal -= empSave;
-        html += '<div class="summary-row" style="color:#4CAF50;"><span>員工優惠 (85折)</span><span>-NT$'+empSave.toLocaleString()+'</span></div>';
+        html += '<div class="summary-row" style="color:#4CAF50;"><span>員工優惠 (75折)</span><span>-NT$'+empSave.toLocaleString()+'</span></div>';
     }
     html += '<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+targetTotal.toLocaleString()+'</span></div>';
     html += '</div>';
@@ -292,7 +323,9 @@ function handleCheckout(e) {
         method: document.querySelector('input[name=shipping]:checked').value,
         payment: document.querySelector('input[name=payment]:checked').value,
         lensChoice: currentLensLabel,
-        lensPrice: currentLensPrice
+        lensPrice: currentLensPrice,
+        addonChoice: currentAddonLabel,
+        addonPrice: currentAddonPrice
     };
     var order = placeOrder(shipping, typeof employeeDiscountActive !== 'undefined' ? employeeDiscountActive : false);
     if (order) {

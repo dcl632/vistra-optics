@@ -180,13 +180,14 @@ function placeOrder(shippingInfo, applyEmpDiscount) {
     }
     let total = getCartTotal();
     let lensPrice = shippingInfo.lensPrice || 0;
-    let subtotal = total + lensPrice;
+    let addonPrice = shippingInfo.addonPrice || 0;
+    let subtotal = total + lensPrice + addonPrice;
     let discount = getDiscount(subtotal);
     const SHIPPING = 200;
     let finalTotal = subtotal - discount + SHIPPING;
     
     if (applyEmpDiscount) {
-        let empSave = Math.round(finalTotal * 0.15);
+        let empSave = Math.round(finalTotal * 0.25); // 7.5折 (25% off)
         discount += empSave;
         finalTotal -= empSave;
     }
@@ -196,6 +197,8 @@ function placeOrder(shippingInfo, applyEmpDiscount) {
         items: JSON.parse(JSON.stringify(cart)),
         subtotal: subtotal,
         lensPrice: lensPrice,
+        addonPrice: addonPrice,
+        addonChoice: shippingInfo.addonChoice || '',
         discount: discount,
         shipping: SHIPPING,
         shippingDiscount: SHIPPING,

@@ -48,24 +48,30 @@ document.addEventListener('DOMContentLoaded', function() {
     var order = JSON.parse(localStorage.getItem('vistra_last_order') || 'null');
     var box = document.getElementById('orderBox');
     if (!order) { box.innerHTML = '<p>找不到訂單資訊</p>'; return; }
+    var si = order.shippingInfo || order.shipping || {};
     var d = new Date(order.createdAt);
     var dateStr = d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
     var html = '<h3>訂單資訊 <span style="color:var(--pink-primary);">#'+order.id+'</span></h3>';
     html += '<div class="detail-row"><span class="detail-label">訂單日期</span><span>'+dateStr+'</span></div>';
-    html += '<div class="detail-row"><span class="detail-label">收件人</span><span>'+order.shipping.name+'</span></div>';
-    html += '<div class="detail-row"><span class="detail-label">配送地址</span><span>'+order.shipping.city+' '+order.shipping.address+'</span></div>';
-    var paymentKey = String(order.shipping.payment || '').toLowerCase().replace(/[^a-z]/g, '');
+    html += '<div class="detail-row"><span class="detail-label">收件人</span><span>'+(si.name || '-')+'</span></div>';
+    html += '<div class="detail-row"><span class="detail-label">配送地址</span><span>'+(si.city || '')+' '+(si.address || '-')+'</span></div>';
+    var paymentKey = String(si.payment || '').toLowerCase().replace(/[^a-z]/g, '');
     var paymentText = paymentKey === 'credit' ? '信用卡' :
         paymentKey === 'atm' ? 'ATM轉帳' :
         paymentKey === 'linepay' ? 'LINE Pay' :
         paymentKey === 'paypal' ? 'PayPal' :
-        paymentKey === 'cod' ? '貨到付款' : (order.shipping.payment || '-');
+        paymentKey === 'cod' ? '貨到付款' : (si.payment || '-');
     html += '<div class="detail-row"><span class="detail-label">付款方式</span><span>'+paymentText+'</span></div>';
     html += '<div class="order-items"><h4 style="font-size:14px;font-weight:700;margin-bottom:8px;">商品明細</h4>';
     order.items.forEach(function(item) {
         html += '<div class="item-row"><span>'+item.name+' × '+item.qty+'</span><span>'+item.price+'</span></div>';
     });
+    var addonPrice = order.addonPrice || (si.addonPrice || 0);
+    var addonLabel = si.addonChoice || '高級皮質收納盒';
     html += '<div class="item-row" style="color:var(--text-light);"><span>小計</span><span>NT$'+order.subtotal.toLocaleString()+'</span></div>';
+    if (addonPrice > 0) {
+        html += '<div class="item-row" style="color:var(--text-light);"><span>加購項目（'+addonLabel+'）</span><span>+NT$'+addonPrice.toLocaleString()+'</span></div>';
+    }
     if (order.discount > 0) {
         html += '<div class="item-row" style="color:#4CAF50;"><span>折扣優惠</span><span>-NT$'+order.discount+'</span></div>';
     }
