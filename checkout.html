@@ -192,8 +192,7 @@ function applyPromo() {
 function renderSummary() {
     var el = document.getElementById('orderSummary');
     var total = getCartTotal();
-    var disc = getDiscount(total);
-    var targetTotal = total - disc;
+    var targetTotal = total;
     
     var html = '<h3>訂單摘要</h3>';
     cart.forEach(function(item) {
@@ -213,7 +212,6 @@ function renderSummary() {
         html += '<div class="order-item"><div class="order-item-img" style="overflow:hidden;">'+imgHtml+'</div><div><div class="order-item-name">'+item.name+'</div><div class="order-item-meta">'+item.lens+' × '+item.qty+'</div></div><div style="margin-left:auto;font-weight:700;">'+item.price+'</div></div>';
     });
     html += '<div style="margin-top:16px;"><div class="summary-row"><span>小計</span><span>NT$'+total.toLocaleString()+'</span></div>';
-    if (disc > 0) html += '<div class="summary-row"><span>滿額折扣</span><span class="discount">-NT$'+disc+'</span></div>';
     
     if (employeeDiscountActive) {
         var empSave = Math.round(targetTotal * 0.15);

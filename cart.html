@@ -71,22 +71,11 @@ function renderCart() {
         itemsHtml += '<div class="cart-item"><div class="cart-item-img" style="padding:0;overflow:hidden;">'+imgHtml+'</div><div class="cart-item-info"><div class="cart-item-name">'+item.name+'</div><div class="cart-item-lens">'+item.lens+'</div></div><div style="display:flex;align-items:center;gap:16px;"><div class="qty-control"><button onclick="updateQty('+item.id+',-1)">−</button><span>'+item.qty+'</span><button onclick="updateQty('+item.id+',1)">+</button></div><div class="cart-item-price">'+item.price+'</div><span class="cart-item-remove" onclick="removeFromCart('+item.id+')"><i class="fa-solid fa-xmark"></i></span></div></div>';
     });
     var total = getCartTotal();
-    var disc = getDiscount(total);
-    var final_total = total - disc;
     var hintHtml = '';
-    if (total < 2000) {
-        hintHtml = '<div class="milestone-hint"><i class="fa-solid fa-info-circle"></i>再消費 NT$'+(2000-total).toLocaleString()+' 即可折 NT$200！</div>';
-    } else if (total < 3500) {
-        hintHtml = '<div class="milestone-hint"><i class="fa-solid fa-info-circle"></i>再消費 NT$'+(3500-total).toLocaleString()+' 即可折 NT$388！</div>';
-    }
     var summaryHtml = '<div class="cart-summary"><h3>訂單摘要</h3>'
-        +'<div class="summary-row"><span>小計</span><span>NT$'+total.toLocaleString()+'</span></div>';
-    if (disc > 0) {
-        summaryHtml += '<div class="summary-row"><span>滿額折扣</span><span class="discount">-NT$'+disc+'</span></div>';
-    }
-    summaryHtml += '<div class="summary-row"><span>運費</span><span>免運費</span></div>'
-        +'<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+final_total.toLocaleString()+'</span></div>'
-        +hintHtml
+        +'<div class="summary-row"><span>小計</span><span>NT$'+total.toLocaleString()+'</span></div>'
+        +'<div class="summary-row"><span>運費</span><span>免運費</span></div>'
+        +'<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+total.toLocaleString()+'</span></div>'
         +'<div class="cart-promo"><input type="text" placeholder="輸入優惠碼"><button class="btn btn-sm" onclick="showToast(\'優惠碼已套用\')">套用</button></div>'
         +'<button class="btn btn-primary" style="width:100%;padding:14px;font-size:15px;margin-top:16px;" onclick="goToCheckout()">前往結帳</button>'
         +'<a href="eyeglasses.html" style="display:block;text-align:center;margin-top:12px;font-size:13px;color:var(--text-light);">← 繼續購物</a></div>';

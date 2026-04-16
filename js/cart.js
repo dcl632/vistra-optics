@@ -115,12 +115,7 @@ function getCartTotal() {
     return total;
 }
 
-// Calculate discount
-function getDiscount(total) {
-    if (total >= 8000) return 600;
-    if (total >= 5000) return 400;
-    return 0;
-}
+
 
 
 
@@ -182,8 +177,8 @@ function placeOrder(shippingInfo, applyEmpDiscount) {
         return null;
     }
     let total = getCartTotal();
-    let discount = getDiscount(total);
-    let finalTotal = total - discount;
+    let discount = 0;
+    let finalTotal = total;
     
     if (applyEmpDiscount) {
         let empSave = Math.round(finalTotal * 0.15);
