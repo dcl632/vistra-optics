@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ---- Countdown Timer ----
     function initCountdown() {
         // Set end date to April 15, 2026 23:59:59 Taiwan time (UTC+8)
-        const endDate = new Date('2026-04-15T23:59:59+08:00').getTime();
+        const endDate = new Date('2026-04-18T23:59:59+08:00').getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
