@@ -79,8 +79,45 @@
                         </label>
                     </div>
                 </div>
+                <!-- Step 3: Lens Selection -->
                 <div class="checkout-section">
-                    <h3><span class="step-num">3</span> 付款方式</h3>
+                    <h3><span class="step-num">3</span> 鸿片加選 <span style="font-size:12px;font-weight:400;color:var(--text-light);margin-left:8px;">（可不選，僅購買鏡框）</span></h3>
+                    <div class="payment-options" style="flex-direction:column;gap:8px;">
+                        <label class="payment-option selected" id="lens-none" style="cursor:pointer;">
+                            <input type="radio" name="lensChoice" value="0" data-label="僅鏡框（不配鏡片）" checked onchange="onLensChange(this)">
+                            <div class="pay-icon"><i class="fa-solid fa-border-none"></i></div>
+                            <div><div class="pay-name">僅鏡框（不配鏡片）</div><div class="pay-desc">無須配鏡，可自行配鏡或放裝飾</div></div>
+                            <div style="margin-left:auto;font-weight:700;">+NT$0</div>
+                        </label>
+                        <label class="payment-option" id="lens-100" style="cursor:pointer;">
+                            <input type="radio" name="lensChoice" value="1500" data-label="閱讀鏡片 100~200 度" onchange="onLensChange(this)">
+                            <div class="pay-icon"><i class="fa-solid fa-glasses"></i></div>
+                            <div><div class="pay-name">閱讀鏡片 100~200 度</div><div class="pay-desc">輕度遠視讀書，超薄非球面鏡片</div></div>
+                            <div style="margin-left:auto;font-weight:700;">+NT$1,500</div>
+                        </label>
+                        <label class="payment-option" id="lens-300" style="cursor:pointer;">
+                            <input type="radio" name="lensChoice" value="1800" data-label="閱讀鏡片 300~400 度" onchange="onLensChange(this)">
+                            <div class="pay-icon"><i class="fa-solid fa-glasses"></i></div>
+                            <div><div class="pay-name">閱讀鏡片 300~400 度</div><div class="pay-desc">中度讀書專用，抵護蓝光設計</div></div>
+                            <div style="margin-left:auto;font-weight:700;">+NT$1,800</div>
+                        </label>
+                        <label class="payment-option" id="lens-500" style="cursor:pointer;">
+                            <input type="radio" name="lensChoice" value="2200" data-label="閱讀鏡片 500~600 度" onchange="onLensChange(this)">
+                            <div class="pay-icon"><i class="fa-solid fa-glasses"></i></div>
+                            <div><div class="pay-name">閱讀鏡片 500~600 度</div><div class="pay-desc">高度遠視讀書，專業用鏡片底</div></div>
+                            <div style="margin-left:auto;font-weight:700;">+NT$2,200</div>
+                        </label>
+                        <label class="payment-option" id="lens-650" style="cursor:pointer;">
+                            <input type="radio" name="lensChoice" value="2800" data-label="閱讀鏡片 650~700 度" onchange="onLensChange(this)">
+                            <div class="pay-icon"><i class="fa-solid fa-glasses"></i></div>
+                            <div><div class="pay-name">閱讀鏡片 650~700 度</div><div class="pay-desc">深度讀書最高規格，頂層鏡片底</div></div>
+                            <div style="margin-left:auto;font-weight:700;">+NT$2,800</div>
+                        </label>
+                    </div>
+                </div>
+                <!-- Step 4: Payment -->
+                <div class="checkout-section">
+                    <h3><span class="step-num">4</span> 付款方式</h3>
                     <div class="payment-options">
                         <label class="payment-option selected" id="opt-credit">
                             <input type="radio" name="payment" value="credit" checked onchange="onPaymentChange(this)">
@@ -110,7 +147,7 @@
                     </div>
                 </div>
                 <div id="creditCardFields" class="checkout-section">
-                    <h3><span class="step-num">4</span> 信用卡資訊</h3>
+                    <h3><span class="step-num">5</span> 信用卡資訊</h3>
                     <div class="form-group"><label>卡號</label><input type="text" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19"></div>
                     <div class="form-row">
                         <div class="form-group"><label>有效期限</label><input type="text" class="form-input" placeholder="MM/YY"></div>
@@ -170,6 +207,16 @@ function onPaymentChange(radio) {
     if (ppBox) ppBox.style.display = radio.value === 'paypal' ? 'block' : 'none';
 }
 var employeeDiscountActive = false;
+var currentLensPrice = 0;
+var currentLensLabel = '僅鏡框（不配鏡片）';
+
+function onLensChange(radio) {
+    currentLensPrice = parseInt(radio.value) || 0;
+    currentLensLabel = radio.getAttribute('data-label');
+    document.querySelectorAll('[id^="lens-"]').forEach(function(el){ el.classList.remove('selected'); });
+    radio.closest('.payment-option').classList.add('selected');
+    renderSummary();
+}
 
 function applyPromo() {
     var code = document.getElementById('promoInput').value.trim();
@@ -191,8 +238,12 @@ function applyPromo() {
 
 function renderSummary() {
     var el = document.getElementById('orderSummary');
-    var total = getCartTotal();
-    var targetTotal = total;
+    var frameTotal = getCartTotal();
+    var lensPrice = currentLensPrice;
+    var subtotal = frameTotal + lensPrice;
+    var SHIPPING = 200;
+    var disc = getDiscount(subtotal);
+    var targetTotal = subtotal - disc + SHIPPING;
     
     var html = '<h3>訂單摘要</h3>';
     cart.forEach(function(item) {
@@ -206,21 +257,24 @@ function renderSummary() {
         else if(item.name.indexOf('AF2088T')>-1) imgUrl = 'images/owndays/eyeglasses_06.webp';
         else if(item.name.indexOf('MG3031N')>-1) imgUrl = 'images/owndays/eyeglasses_07.webp';
         else if(item.name.indexOf('PL3050N')>-1) imgUrl = 'images/owndays/eyeglasses_08.webp';
-        
         var imgHtml = imgUrl ? '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;background:transparent;">' : '<i class="fa-solid fa-glasses"></i>';
-        
         html += '<div class="order-item"><div class="order-item-img" style="overflow:hidden;">'+imgHtml+'</div><div><div class="order-item-name">'+item.name+'</div><div class="order-item-meta">'+item.lens+' × '+item.qty+'</div></div><div style="margin-left:auto;font-weight:700;">'+item.price+'</div></div>';
     });
-    html += '<div style="margin-top:16px;"><div class="summary-row"><span>小計</span><span>NT$'+total.toLocaleString()+'</span></div>';
-    
+    html += '<div style="margin-top:16px;">';
+    html += '<div class="summary-row"><span>鏡框小計</span><span>NT$'+frameTotal.toLocaleString()+'</span></div>';
+    if (lensPrice > 0) {
+        html += '<div class="summary-row"><span>鏡片費用（'+currentLensLabel+'）</span><span>+NT$'+lensPrice.toLocaleString()+'</span></div>';
+    }
+    if (disc > 0) html += '<div class="summary-row"><span>滿額折扣</span><span class="discount">-NT$'+disc.toLocaleString()+'</span></div>';
+    html += '<div class="summary-row"><span>運費</span><span>NT$'+SHIPPING+'</span></div>';
+    html += '<div class="summary-row" style="color:#4CAF50;"><span>運費折抵</span><span>-NT$'+SHIPPING+'</span></div>';
     if (employeeDiscountActive) {
         var empSave = Math.round(targetTotal * 0.15);
         targetTotal -= empSave;
         html += '<div class="summary-row" style="color:#4CAF50;"><span>員工優惠 (85折)</span><span>-NT$'+empSave.toLocaleString()+'</span></div>';
     }
-    
-    html += '<div class="summary-row"><span>運費</span><span>免運費</span></div>';
-    html += '<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+targetTotal.toLocaleString()+'</span></div></div>';
+    html += '<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+targetTotal.toLocaleString()+'</span></div>';
+    html += '</div>';
     el.innerHTML = html;
 }
 function handleCheckout(e) {
@@ -234,7 +288,9 @@ function handleCheckout(e) {
         address: document.getElementById('shipAddr').value,
         note: document.getElementById('shipNote').value,
         method: document.querySelector('input[name=shipping]:checked').value,
-        payment: document.querySelector('input[name=payment]:checked').value
+        payment: document.querySelector('input[name=payment]:checked').value,
+        lensChoice: currentLensLabel,
+        lensPrice: currentLensPrice
     };
     var order = placeOrder(shipping, typeof employeeDiscountActive !== 'undefined' ? employeeDiscountActive : false);
     if (order) {

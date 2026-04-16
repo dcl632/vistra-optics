@@ -114,12 +114,14 @@ function getCartTotal() {
     });
     return total;
 }
+// Calculate volume discount
+function getDiscount(total) {
+    if (total >= 8000) return 600;
+    if (total >= 5000) return 400;
+    return 0;
+}
 
 
-
-
-
-// Login
 function doLogin(email, password) {
     if (!email || !password) {
         showToast('請輸入帳號密碼', 'error');
@@ -177,8 +179,11 @@ function placeOrder(shippingInfo, applyEmpDiscount) {
         return null;
     }
     let total = getCartTotal();
-    let discount = 0;
-    let finalTotal = total;
+    let lensPrice = shippingInfo.lensPrice || 0;
+    let subtotal = total + lensPrice;
+    let discount = getDiscount(subtotal);
+    const SHIPPING = 200;
+    let finalTotal = subtotal - discount + SHIPPING;
     
     if (applyEmpDiscount) {
         let empSave = Math.round(finalTotal * 0.15);
@@ -189,10 +194,13 @@ function placeOrder(shippingInfo, applyEmpDiscount) {
     let order = {
         id: 'OD' + Date.now().toString(36).toUpperCase(),
         items: JSON.parse(JSON.stringify(cart)),
-        subtotal: total,
+        subtotal: subtotal,
+        lensPrice: lensPrice,
         discount: discount,
+        shipping: SHIPPING,
+        shippingDiscount: SHIPPING,
         total: finalTotal,
-        shipping: shippingInfo,
+        shippingInfo: shippingInfo,
         status: '處理中',
         createdAt: new Date().toISOString(),
         user: currentUser ? currentUser.email : 'guest'

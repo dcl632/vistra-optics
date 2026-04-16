@@ -71,11 +71,17 @@ function renderCart() {
         itemsHtml += '<div class="cart-item"><div class="cart-item-img" style="padding:0;overflow:hidden;">'+imgHtml+'</div><div class="cart-item-info"><div class="cart-item-name">'+item.name+'</div><div class="cart-item-lens">'+item.lens+'</div></div><div style="display:flex;align-items:center;gap:16px;"><div class="qty-control"><button onclick="updateQty('+item.id+',-1)">−</button><span>'+item.qty+'</span><button onclick="updateQty('+item.id+',1)">+</button></div><div class="cart-item-price">'+item.price+'</div><span class="cart-item-remove" onclick="removeFromCart('+item.id+')"><i class="fa-solid fa-xmark"></i></span></div></div>';
     });
     var total = getCartTotal();
-    var hintHtml = '';
+    var disc = getDiscount(total);
+    var SHIPPING = 200;
+    var finalTotal = total - disc; // shipping折抵後為0，不計入
     var summaryHtml = '<div class="cart-summary"><h3>訂單摘要</h3>'
-        +'<div class="summary-row"><span>小計</span><span>NT$'+total.toLocaleString()+'</span></div>'
-        +'<div class="summary-row"><span>運費</span><span>免運費</span></div>'
-        +'<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+total.toLocaleString()+'</span></div>'
+        +'<div class="summary-row"><span>小計</span><span>NT$'+total.toLocaleString()+'</span></div>';
+    if (disc > 0) {
+        summaryHtml += '<div class="summary-row"><span>滿額折扣</span><span class="discount">-NT$'+disc.toLocaleString()+'</span></div>';
+    }
+    summaryHtml += '<div class="summary-row"><span>運費</span><span>NT$'+SHIPPING+'</span></div>'
+        +'<div class="summary-row" style="color:#4CAF50;"><span>運費折抵</span><span>-NT$'+SHIPPING+'</span></div>'
+        +'<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+finalTotal.toLocaleString()+'</span></div>'
         +'<div class="cart-promo"><input type="text" placeholder="輸入優惠碼"><button class="btn btn-sm" onclick="showToast(\'優惠碼已套用\')">套用</button></div>'
         +'<button class="btn btn-primary" style="width:100%;padding:14px;font-size:15px;margin-top:16px;" onclick="goToCheckout()">前往結帳</button>'
         +'<a href="eyeglasses.html" style="display:block;text-align:center;margin-top:12px;font-size:13px;color:var(--text-light);">← 繼續購物</a></div>';
