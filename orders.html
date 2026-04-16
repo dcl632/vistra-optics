@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             html += '<div class="order-card-item"><div class="item-icon" style="padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">'+imgHtml+'</div><div><div class="item-name">'+item.name+'</div><div class="item-meta">'+item.lens+' &times; '+item.qty+'</div></div><div class="item-price">'+item.price+'</div></div>';
         });
-        html += '</div><div class="order-card-footer"><div><span style="font-size:13px;color:var(--text-light);">訂單金額</span></div><div class="order-total">NT$'+order.total.toLocaleString()+'</div></div></div>';
+        html += '</div><div class="order-card-footer"><div><span style="font-size:13px;color:var(--text-light);">訂單金額</span></div><div style="display:flex;align-items:center;gap:16px;"><div class="order-total">NT$'+order.total.toLocaleString()+'</div><a href="order-detail.html?id='+order.id+'" class="btn btn-sm btn-outline" style="white-space:nowrap;"><i class="fa-solid fa-chevron-right"></i> 查看詳情</a></div></div></div>';
     });
     el.innerHTML = html;
 });

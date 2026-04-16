@@ -51,15 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     var d = new Date(order.createdAt);
     var dateStr = d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
-    var payMap = {credit:'信用卡',atm:'ATM轉帳',linepay:'LINE Pay',cod:'貨到付款'};
+    var payMap = {credit:'信用卡',atm:'ATM轉帳',linepay:'LINE Pay',cod:'貨到付款',paypal:'PayPal'};
     var shipMap = {home:'宅配到府',store:'門市取貨',cvs:'超商取貨'};
+    var si = order.shippingInfo || order.shipping || {};
     var html = '<div class="order-header"><h2>訂單 #'+order.id+'</h2><span class="order-status-badge">'+order.status+'</span></div>';
-    // Tracking
     html += '<div class="detail-section"><h3>訂單進度</h3><div class="tracking-steps"><div class="tracking-step"><div class="tracking-dot done"><i class="fa-solid fa-check"></i></div><div class="tracking-label">訂單成立</div></div><div class="tracking-step"><div class="tracking-dot active"><i class="fa-solid fa-box"></i></div><div class="tracking-label">處理中</div></div><div class="tracking-step"><div class="tracking-dot"><i class="fa-solid fa-truck"></i></div><div class="tracking-label">已出貨</div></div><div class="tracking-step"><div class="tracking-dot"><i class="fa-solid fa-house"></i></div><div class="tracking-label">已送達</div></div></div></div>';
-    // Order info
-    html += '<div class="detail-section"><h3>訂單資訊</h3><div class="detail-row"><span class="detail-label">訂單編號</span><span>'+order.id+'</span></div><div class="detail-row"><span class="detail-label">下單時間</span><span>'+dateStr+'</span></div><div class="detail-row"><span class="detail-label">付款方式</span><span>'+(payMap[order.shipping.payment]||order.shipping.payment)+'</span></div><div class="detail-row"><span class="detail-label">配送方式</span><span>'+(shipMap[order.shipping.method]||order.shipping.method)+'</span></div></div>';
-    // Shipping info
-    html += '<div class="detail-section"><h3>收件資訊</h3><div class="detail-row"><span class="detail-label">收件人</span><span>'+order.shipping.name+'</span></div><div class="detail-row"><span class="detail-label">手機</span><span>'+order.shipping.phone+'</span></div><div class="detail-row"><span class="detail-label">地址</span><span>'+order.shipping.city+' '+order.shipping.address+'</span></div></div>';
+    html += '<div class="detail-section"><h3>訂單資訊</h3><div class="detail-row"><span class="detail-label">訂單編號</span><span>'+order.id+'</span></div><div class="detail-row"><span class="detail-label">下單時間</span><span>'+dateStr+'</span></div><div class="detail-row"><span class="detail-label">付款方式</span><span>'+(payMap[si.payment]||si.payment||'-')+'</span></div><div class="detail-row"><span class="detail-label">配送方式</span><span>'+(shipMap[si.method]||si.method||'-')+'</span></div></div>';
+    html += '<div class="detail-section"><h3>收件資訊</h3><div class="detail-row"><span class="detail-label">收件人</span><span>'+(si.name||'-')+'</span></div><div class="detail-row"><span class="detail-label">手機</span><span>'+(si.phone||'-')+'</span></div><div class="detail-row"><span class="detail-label">地址</span><span>'+(si.city||'')+' '+(si.address||'-')+'</span></div></div>';
     // Items
     html += '<div class="detail-section"><h3>商品明細</h3><div class="item-list">';
     order.items.forEach(function(item) {
@@ -75,12 +73,16 @@ document.addEventListener('DOMContentLoaded', function() {
         else if(item.name.indexOf('PL3050N')>-1) imgUrl = 'images/owndays/eyeglasses_08.webp';
         else if(item.name.indexOf('AURA')>-1 || item.name.indexOf('LUMINA')>-1) imgUrl = 'images/owndays/aura-ice.png';
         var imgHtml = imgUrl ? '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;background:transparent;border-radius:4px;">' : '<i class="fa-solid fa-glasses"></i>';
-
-        html += '<div class="item-row"><div class="item-icon" style="padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">'+imgHtml+'</div><div style="flex:1;"><div style="font-weight:700;font-size:14px;">'+item.name+'</div><div style="font-size:12px;color:var(--text-light);">'+item.lens+' &times; '+item.qty+'</div></div><div style="font-weight:700;color:var(--pink-primary);">'+item.price+'</div></div>';"><div style="font-weight:700;font-size:14px;">'+item.name+'</div><div style="font-size:12px;color:var(--text-light);">'+item.lens+' × '+item.qty+'</div></div><div style="font-weight:700;color:var(--pink-primary);">'+item.price+'</div></div>';
+        html += '<div class="item-row"><div class="item-icon" style="padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">'+imgHtml+'</div><div style="flex:1;"><div style="font-weight:700;font-size:14px;">'+item.name+'</div><div style="font-size:12px;color:var(--text-light);">'+item.lens+' &times; '+item.qty+'</div></div><div style="font-weight:700;color:var(--pink-primary);">'+item.price+'</div></div>';
     });
-    html += '</div><div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px;"><div class="detail-row"><span>小計</span><span>NT$'+order.subtotal.toLocaleString()+'</span></div>';
-    if (order.discount > 0) html += '<div class="detail-row"><span>折扣</span><span style="color:#4CAF50;">-NT$'+order.discount+'</span></div>';
-    html += '<div class="detail-row" style="font-size:18px;font-weight:900;"><span>合計</span><span style="color:var(--pink-primary);">NT$'+order.total.toLocaleString()+'</span></div></div></div>';
+    html += '</div><div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px;">';
+    html += '<div class="detail-row"><span>鏡框小計</span><span>NT$'+(order.subtotal - (order.lensPrice||0)).toLocaleString()+'</span></div>';
+    if ((order.lensPrice||0) > 0) html += '<div class="detail-row"><span>鏡片費用</span><span>+NT$'+(order.lensPrice).toLocaleString()+'</span></div>';
+    if (order.discount > 0) html += '<div class="detail-row"><span>折扣優惠</span><span style="color:#4CAF50;">-NT$'+order.discount.toLocaleString()+'</span></div>';
+    html += '<div class="detail-row"><span>運費</span><span>NT$200</span></div>';
+    html += '<div class="detail-row" style="color:#4CAF50;"><span>運費折抵</span><span>-NT$200</span></div>';
+    html += '<div class="detail-row" style="font-size:18px;font-weight:900;"><span>合計</span><span style="color:var(--pink-primary);">NT$'+order.total.toLocaleString()+'</span></div>';
+    html += '</div></div>';
     html += '<div style="text-align:center;"><a href="orders.html" class="btn btn-outline" style="margin-right:12px;">← 返回訂單列表</a><a href="index.html" class="btn btn-primary">繼續購物</a></div>';
     el.innerHTML = html;
 });
