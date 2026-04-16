@@ -69,7 +69,7 @@ PRODUCT_ITEMS='
                 <div class="product-card-brand">OWNDAYS</div>
                 <div class="product-card-name">NC3019N-1A</div>
                 <div class="product-card-color">Matte Black</div>
-                <div class="product-card-price">NT$1,790</div>
+                <div class="product-card-price">NT$7,190</div>
             </div>
         </a>
         <a href="product-of2072t.html" class="product-card">
@@ -78,7 +78,7 @@ PRODUCT_ITEMS='
                 <div class="product-card-brand">AIR FIT</div>
                 <div class="product-card-name">OF2072T-1A</div>
                 <div class="product-card-color">Brown Demi</div>
-                <div class="product-card-price">NT$2,380</div>
+                <div class="product-card-price">NT$7,380</div>
             </div>
         </a>
         <a href="product-lb1009g.html" class="product-card">
@@ -87,7 +87,7 @@ PRODUCT_ITEMS='
                 <div class="product-card-brand">LILLYBELL</div>
                 <div class="product-card-name">LB1009G-1A</div>
                 <div class="product-card-color">Rose Gold</div>
-                <div class="product-card-price">NT$2,380</div>
+                <div class="product-card-price">NT$7,380</div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -96,7 +96,7 @@ PRODUCT_ITEMS='
                 <div class="product-card-brand">OWNDAYS</div>
                 <div class="product-card-name">OG2025B-1S</div>
                 <div class="product-card-color">Navy Blue</div>
-                <div class="product-card-price">NT$1,790</div>
+                <div class="product-card-price">NT$7,190</div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -105,7 +105,7 @@ PRODUCT_ITEMS='
                 <div class="product-card-brand">OWNDAYS SNAP</div>
                 <div class="product-card-name">SNP1020X-2A</div>
                 <div class="product-card-color">Gunmetal</div>
-                <div class="product-card-price">NT$2,980 <span class="original">NT$4,980</span></div>
+                <div class="product-card-price">NT$7,480 <span class="original">NT$7,980</span></div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -114,7 +114,7 @@ PRODUCT_ITEMS='
                 <div class="product-card-brand">AIR FIT</div>
                 <div class="product-card-name">AF2088T-0S</div>
                 <div class="product-card-color">Clear Gray</div>
-                <div class="product-card-price">NT$2,380</div>
+                <div class="product-card-price">NT$7,380</div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -123,7 +123,7 @@ PRODUCT_ITEMS='
                 <div class="product-card-brand">OWNDAYS</div>
                 <div class="product-card-name">MG3031N-2S</div>
                 <div class="product-card-color">Tortoise</div>
-                <div class="product-card-price">NT$1,790</div>
+                <div class="product-card-price">NT$7,190</div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -132,7 +132,7 @@ PRODUCT_ITEMS='
                 <div class="product-card-brand">OWNDAYS</div>
                 <div class="product-card-name">PL3050N-0A</div>
                 <div class="product-card-color">Burgundy</div>
-                <div class="product-card-price">NT$1,790</div>
+                <div class="product-card-price">NT$7,190</div>
             </div>
         </a>'
 
@@ -175,7 +175,7 @@ SUN_ITEMS='
                 <div class="product-card-brand">OWNDAYS SUN</div>
                 <div class="product-card-name">OPC2051N-1A</div>
                 <div class="product-card-color">Clear Gray</div>
-                <div class="product-card-price">NT$2,980</div>
+                <div class="product-card-price">NT$7,480</div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -184,7 +184,7 @@ SUN_ITEMS='
                 <div class="product-card-brand">OWNDAYS SUN</div>
                 <div class="product-card-name">SG1022B-1S</div>
                 <div class="product-card-color">Black</div>
-                <div class="product-card-price">NT$2,980</div>
+                <div class="product-card-price">NT$7,480</div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -193,7 +193,7 @@ SUN_ITEMS='
                 <div class="product-card-brand">OWNDAYS SUN</div>
                 <div class="product-card-name">SG2055T-0A</div>
                 <div class="product-card-color">Havana Brown</div>
-                <div class="product-card-price">NT$3,480</div>
+                <div class="product-card-price">NT$7,580</div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -202,7 +202,7 @@ SUN_ITEMS='
                 <div class="product-card-brand">OWNDAYS SUN</div>
                 <div class="product-card-name">SG3080N-2S</div>
                 <div class="product-card-color">Gold</div>
-                <div class="product-card-price">NT$2,980</div>
+                <div class="product-card-price">NT$7,480</div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -211,7 +211,7 @@ SUN_ITEMS='
                 <div class="product-card-brand">OWNDAYS SUN</div>
                 <div class="product-card-name">SG4010K-1A</div>
                 <div class="product-card-color">Pink Mirror</div>
-                <div class="product-card-price">NT$2,980</div>
+                <div class="product-card-price">NT$7,480</div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -220,7 +220,7 @@ SUN_ITEMS='
                 <div class="product-card-brand">OWNDAYS SUN</div>
                 <div class="product-card-name">SG5090N-0S</div>
                 <div class="product-card-color">Matte Navy</div>
-                <div class="product-card-price">NT$1,790 <span class="original">NT$2,980</span></div>
+                <div class="product-card-price">NT$7,190 <span class="original">NT$7,480</span></div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -229,7 +229,7 @@ SUN_ITEMS='
                 <div class="product-card-brand">OWNDAYS SUN</div>
                 <div class="product-card-name">SG6020X-2A</div>
                 <div class="product-card-color">Tortoise</div>
-                <div class="product-card-price">NT$3,480</div>
+                <div class="product-card-price">NT$7,580</div>
             </div>
         </a>
         <a href="product-detail.html" class="product-card">
@@ -238,7 +238,7 @@ SUN_ITEMS='
                 <div class="product-card-brand">OWNDAYS SUN</div>
                 <div class="product-card-name">SG7015B-1A</div>
                 <div class="product-card-color">Crystal Blue</div>
-                <div class="product-card-price">NT$2,980</div>
+                <div class="product-card-price">NT$7,480</div>
             </div>
         </a>'
 
