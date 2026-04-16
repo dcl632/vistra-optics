@@ -220,6 +220,21 @@ function showToast(msg, type) {
     }, 2500);
 }
 
+// Checkout redirection
+function goToCheckout() {
+    if (cart.length === 0) {
+        showToast('購物車是空的，快去選購吧！', 'error');
+        return;
+    }
+    if (!currentUser) {
+        showToast('請先登入會員以進行結帳', 'error');
+        sessionStorage.setItem('after_login_redirect', 'checkout.html');
+        setTimeout(function() { location.href = 'login.html'; }, 1000);
+        return;
+    }
+    location.href = 'checkout.html';
+}
+
 // On page load, update badge
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(updateCartBadge, 100);
