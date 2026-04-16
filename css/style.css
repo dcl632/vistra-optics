@@ -295,10 +295,12 @@ img {
     inset: 0;
     background: rgba(0,0,0,0.5);
     z-index: 999;
+    pointer-events: none;
 }
 
 .mobile-nav-overlay.active {
     display: block;
+    pointer-events: auto;
 }
 
 /* Mobile open dropdown */
@@ -1544,17 +1546,18 @@ img {
     }
 
     .nav-list {
-        display: flex !important;
-        flex-direction: column;
-        gap: 0;
+        display: block !important;
+        padding-top: 10px;
     }
 
 
 
 
     .nav-item > a {
+        display: block;
         padding: 14px 24px;
         border-bottom: 1px solid var(--border-color);
+        text-align: left;
     }
 
     .nav-item > a::after {
@@ -1573,7 +1576,9 @@ img {
     }
 
     .dropdown a {
-        padding-left: 40px;
+        display: block;
+        padding: 12px 24px 12px 40px;
+        text-align: left;
     }
 
     /* Hero Mobile */

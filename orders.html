@@ -8,7 +8,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-.orders-page{padding:48px 0;}
+.account-grid{display:grid;grid-template-columns:240px 1fr;gap:32px;padding:48px 0;align-items:start;}
+.account-sidebar{border-right:1px solid var(--border-color);padding-right:32px;}
+.account-sidebar .user-info{text-align:center;margin-bottom:32px;}
+.account-sidebar .user-avatar{width:80px;height:80px;border-radius:50%;background:var(--pink-lighter);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:32px;color:var(--pink-primary);}
+.account-sidebar .user-name{font-size:18px;font-weight:700;margin-bottom:4px;}
+.account-sidebar .user-email{font-size:13px;color:var(--text-light);}
+.account-menu a{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--radius-sm);font-size:14px;color:var(--text-secondary);transition:var(--transition);margin-bottom:4px;}
+.account-menu a:hover,.account-menu a.active{background:var(--pink-lighter);color:var(--pink-primary);}
+.account-menu a i{width:18px;text-align:center;}
+.account-main h2{font-size:22px;font-weight:700;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border-color);}
+.orders-page{padding:0 0 48px 0;} /* Removed top padding to align with header */
 .order-card{border:1px solid var(--border-color);border-radius:var(--radius-md);margin-bottom:16px;overflow:hidden;}
 .order-card-header{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--bg-light);border-bottom:1px solid var(--border-color);flex-wrap:wrap;gap:8px;}
 .order-id{font-weight:700;color:var(--pink-primary);}
@@ -23,6 +33,7 @@
 .order-card-item .item-price{margin-left:auto;font-weight:700;color:var(--pink-primary);}
 .order-card-footer{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-top:1px solid var(--border-color);}
 .order-total{font-size:18px;font-weight:900;color:var(--pink-primary);}
+@media(max-width:768px){.account-grid{grid-template-columns:1fr;}.account-sidebar{border-right:none;border-bottom:1px solid var(--border-color);padding-right:0;padding-bottom:24px;}}
 </style>
 </head>
 <body data-page="">
@@ -30,7 +41,26 @@
 <main class="main-content">
 <div class="page-banner"><h1>訂單查詢</h1><p>查看您的所有訂單紀錄</p></div>
 <div class="container">
-    <div class="orders-page" id="ordersContent"></div>
+    <div class="account-grid">
+        <aside class="account-sidebar">
+            <div class="user-info">
+                <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="user-name" id="userName">會員</div>
+                <div class="user-email" id="userEmail">-</div>
+            </div>
+            <nav class="account-menu">
+                <a href="account.html"><i class="fa-solid fa-gauge"></i> 總覽</a>
+                <a href="orders.html" class="active"><i class="fa-solid fa-box"></i> 訂單查詢</a>
+                <a href="wishlist.html"><i class="fa-regular fa-heart"></i> 收藏清單</a>
+                <a href="account-profile.html"><i class="fa-solid fa-user-pen"></i> 個人資料</a>
+                <a href="#" onclick="doLogout();return false;"><i class="fa-solid fa-right-from-bracket"></i> 登出</a>
+            </nav>
+        </aside>
+        <div class="account-main">
+            <h2>所有訂單</h2>
+            <div class="orders-page" id="ordersContent"></div>
+        </div>
+    </div>
 </div>
 </main>
 <div id="shared-footer"></div>
@@ -38,6 +68,10 @@
 <script src="js/cart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    if (!currentUser) { location.href = 'login.html'; return; }
+    document.getElementById('userName').textContent = currentUser.name || '會員';
+    document.getElementById('userEmail').textContent = currentUser.email;
+
     var el = document.getElementById('ordersContent');
     if (orders.length === 0) {
         el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-box-open"></i><h2>尚無訂單</h2><p>您還沒有任何訂單紀錄</p><a href="eyeglasses.html" class="btn btn-primary">前往選購</a></div>';

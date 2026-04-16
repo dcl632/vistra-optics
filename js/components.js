@@ -186,6 +186,8 @@ function initComponents() {
         overlay && overlay.classList.remove('active');
         document.body.style.overflow = '';
     }
+    // Expose globally so other pages can close the nav
+    window.closeNav = closeNav;
 
     if (hamburgerBtn) {
         hamburgerBtn.addEventListener('click', function() {
@@ -216,7 +218,19 @@ function initComponents() {
         document.querySelectorAll('.dropdown a, .nav-item:not(.has-dropdown) > a').forEach(function(link) {
             link.addEventListener('click', closeNav);
         });
+
+        // Escape key closes nav
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeNav();
+        });
     }
+
+    // Account sidebar links: always close mobile nav when clicked
+    document.querySelectorAll('.account-menu a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            if (typeof closeNav === 'function') closeNav();
+        });
+    });
 
     // Back to top
     const btt = document.getElementById('backToTop');
