@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品詳情 | VISTRA 台灣</title>
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/pages.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body data-page="eyeglasses">
+<div id="shared-header"></div>
+<main class="main-content">
+<div class="page-banner" style="padding:20px;text-align:left;"><div class="container"><div class="breadcrumb"><a href="index.html">首頁</a> / <a href="eyeglasses.html">眼鏡</a> / 商品詳情</div></div></div>
+<div class="container">
+    <div class="product-detail">
+        <div class="product-gallery">
+            <img src="images/owndays/aura-ice.png" alt="LUCENT 琉璃晶透" style="width:100%; height:100%; object-fit:contain; border-radius: var(--radius-lg); background-color: transparent;">
+        </div>
+        <div class="product-info-detail">
+            <h1>LUCENT 琉璃晶透 · 手工板材</h1>
+            <div class="product-detail-brand">VISTRA RESERVE</div>
+            <div class="product-detail-price">NT$9,690</div>
+            <p>嚴選義大利百年大廠的頂級醋酸纖維（Premium Acetate），由職人歷經百道工序手工切削、拋光，打造出如冰川琉璃般零雜質的通透光澤。鏡腳內嵌航太級純鈦芯骨，成就輕盈且堅若磐石的極致配戴體驗，是無可挑剔的輕奢精品。</p>
+            
+            <div class="color-options">
+                <p style="font-size:13px;color:#999;margin-bottom:8px;">顏色選擇</p>
+                <div class="color-options">
+                    <div class="color-dot active" style="background:#e0f7fa;" title="Crystal Clear"></div>
+                    <div class="color-dot" style="background:#b2ebf2;" title="Ice Blue"></div>
+                </div>
+            </div>
+            <ul class="product-features">
+                <li><i class="fa-solid fa-check"></i>義大利頂級手工板材</li>
+                <li><i class="fa-solid fa-check"></i>手工慢磨琉璃拋光</li>
+                <li><i class="fa-solid fa-check"></i>內嵌航太純鈦芯骨</li>
+                <li><i class="fa-solid fa-check"></i>含標準非球面鏡片</li>
+                <li><i class="fa-solid fa-check"></i>一年保固</li>
+            </ul>
+            <div class="lens-upgrade-box">
+                <h3><i class="fa-solid fa-arrow-up-right-dots"></i> 春日祭鏡片升級優惠</h3>
+                <div class="lens-option-row"><span>抗藍光鏡片</span><span class="lens-option-price">+NT$1,200</span></div>
+                <div class="lens-option-row"><span>染色鏡片</span><span class="lens-option-price">+NT$1,200</span></div>
+                <div class="lens-option-row"><span>雙面非球面鏡片</span><span class="lens-option-price">+NT$2,400</span></div>
+                <div class="lens-option-row"><span>變色鏡片</span><span class="lens-option-price">+NT$3,500</span></div>
+                <div class="lens-option-row"><span>偏光鏡片</span><span class="lens-option-price">+NT$3,500</span></div>
+                <div class="lens-option-row"><span>全視線 GEN S</span><span class="lens-option-price">+NT$5,800</span></div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary btn-lg" onclick="addToCart('LUCENT 琉璃晶透 · 手工板材','NT$9,690')">加入購物車</button>
+                <button class="btn btn-outline btn-lg" style="width:auto;padding:0 24px;" onclick="addToWishlist('LUCENT 琉璃晶透 · 手工板材','NT$9,690')"><i class="fa-regular fa-heart"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+<div id="shared-footer"></div>
+<script src="js/components.js"></script><script src="js/cart.js"></script>
+
+<script>
+// Color swatch selector
+document.querySelectorAll('.color-dot').forEach(function(dot) {
+    dot.style.cursor = 'pointer';
+    dot.style.border = '2px solid transparent';
+    dot.style.borderRadius = '50%';
+    dot.style.padding = '2px';
+    dot.style.transition = 'all 0.2s ease';
+    if (dot.classList.contains('active')) {
+        dot.style.border = '2px solid #e8728a';
+        dot.style.outline = '2px solid #e8728a';
+        dot.style.outlineOffset = '2px';
+    }
+    dot.addEventListener('click', function() {
+        document.querySelectorAll('.color-dot').forEach(function(d) {
+            d.style.border = '2px solid transparent';
+            d.style.outline = 'none';
+            d.classList.remove('active');
+        });
+        this.classList.add('active');
+        this.style.border = '2px solid #e8728a';
+        this.style.outline = '2px solid #e8728a';
+        this.style.outlineOffset = '2px';
+        // Update selected color text
+        var colorName = this.getAttribute('title') || '';
+        var colorLabel = document.querySelector('.selected-color-name');
+        if (colorLabel) colorLabel.textContent = colorName;
+        // Small bounce animation
+        this.style.transform = 'scale(1.2)';
+        setTimeout(function(el){ el.style.transform = 'scale(1)'; }, 200, this);
+    });
+});
+</script>
+
+</body></html>
