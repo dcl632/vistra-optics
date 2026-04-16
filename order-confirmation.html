@@ -63,15 +63,16 @@ document.addEventListener('DOMContentLoaded', function() {
         paymentKey === 'cod' ? '貨到付款' : (si.payment || '-');
     html += '<div class="detail-row"><span class="detail-label">付款方式</span><span>'+paymentText+'</span></div>';
     html += '<div class="order-items"><h4 style="font-size:14px;font-weight:700;margin-bottom:8px;">商品明細</h4>';
+    var addonPrice = order.addonPrice || (si.addonPrice || 0);
+    var addonLabel = si.addonChoice || '高級皮質收納盒';
+    var addonImage = 'images/premium-leather-case.png?v=1';
     order.items.forEach(function(item) {
         html += '<div class="item-row"><span>'+item.name+' × '+item.qty+'</span><span>'+item.price+'</span></div>';
     });
-    var addonPrice = order.addonPrice || (si.addonPrice || 0);
-    var addonLabel = si.addonChoice || '高級皮質收納盒';
-    html += '<div class="item-row" style="color:var(--text-light);"><span>小計</span><span>NT$'+order.subtotal.toLocaleString()+'</span></div>';
     if (addonPrice > 0) {
-        html += '<div class="item-row" style="color:var(--text-light);"><span>加購項目（'+addonLabel+'）</span><span>+NT$'+addonPrice.toLocaleString()+'</span></div>';
+        html += '<div class="item-row"><span style="display:inline-flex;align-items:center;gap:8px;"><img src="'+addonImage+'" style="width:36px;height:28px;object-fit:cover;border-radius:4px;background:white;">'+addonLabel+' × 1</span><span>+NT$'+addonPrice.toLocaleString()+'</span></div>';
     }
+    html += '<div class="item-row" style="color:var(--text-light);"><span>小計</span><span>NT$'+order.subtotal.toLocaleString()+'</span></div>';
     if (order.discount > 0) {
         html += '<div class="item-row" style="color:#4CAF50;"><span>折扣優惠</span><span>-NT$'+order.discount+'</span></div>';
     }

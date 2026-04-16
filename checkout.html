@@ -265,6 +265,7 @@ function applyPromo() {
 
 function renderSummary() {
     var el = document.getElementById('orderSummary');
+    var addonImage = 'images/premium-leather-case.png?v=1';
     var frameTotal = getCartTotal();
     var lensPrice = currentLensPrice;
     var addonPrice = currentAddonPrice;
@@ -288,6 +289,9 @@ function renderSummary() {
         var imgHtml = imgUrl ? '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;background:transparent;">' : '<i class="fa-solid fa-glasses"></i>';
         html += '<div class="order-item"><div class="order-item-img" style="overflow:hidden;">'+imgHtml+'</div><div><div class="order-item-name">'+item.name+'</div><div class="order-item-meta">'+item.lens+' × '+item.qty+'</div></div><div style="margin-left:auto;font-weight:700;">'+item.price+'</div></div>';
     });
+    if (addonPrice > 0) {
+        html += '<div class="order-item"><div class="order-item-img" style="overflow:hidden;background:white;"><img src="'+addonImage+'" style="width:100%;height:100%;object-fit:cover;background:transparent;"></div><div><div class="order-item-name">'+currentAddonLabel+'</div><div class="order-item-meta">加購商品 × 1</div></div><div style="margin-left:auto;font-weight:700;">+NT$'+addonPrice.toLocaleString()+'</div></div>';
+    }
     html += '<div style="margin-top:16px;">';
     html += '<div class="summary-row"><span>鏡框小計</span><span>NT$'+frameTotal.toLocaleString()+'</span></div>';
     if (lensPrice > 0) {

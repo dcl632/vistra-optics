@@ -67,6 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     var shipMap = {home:'宅配到府',store:'門市取貨',cvs:'超商取貨'};
     var si = order.shippingInfo || order.shipping || {};
+    var addonPrice = order.addonPrice || (si.addonPrice||0);
+    var addonLabel = si.addonChoice || '高級皮質收納盒';
+    var addonImage = 'images/premium-leather-case.png?v=1';
     var html = '<div class="order-header"><h2>訂單 #'+order.id+'</h2><span class="order-status-badge">'+order.status+'</span></div>';
     html += '<div class="detail-section"><h3>訂單進度</h3><div class="tracking-steps"><div class="tracking-step"><div class="tracking-dot done"><i class="fa-solid fa-check"></i></div><div class="tracking-label">訂單成立</div></div><div class="tracking-step"><div class="tracking-dot active"><i class="fa-solid fa-box"></i></div><div class="tracking-label">處理中</div></div><div class="tracking-step"><div class="tracking-dot"><i class="fa-solid fa-truck"></i></div><div class="tracking-label">已出貨</div></div><div class="tracking-step"><div class="tracking-dot"><i class="fa-solid fa-house"></i></div><div class="tracking-label">已送達</div></div></div></div>';
     html += '<div class="detail-section"><h3>訂單資訊</h3><div class="detail-row"><span class="detail-label">訂單編號</span><span>'+order.id+'</span></div><div class="detail-row"><span class="detail-label">下單時間</span><span>'+dateStr+'</span></div><div class="detail-row"><span class="detail-label">付款方式</span><span style="display:inline-flex;align-items:center;min-height:18px;">'+renderPayment(si.payment)+'</span></div><div class="detail-row"><span class="detail-label">配送方式</span><span>'+(shipMap[si.method]||si.method||'-')+'</span></div></div>';
@@ -88,8 +91,9 @@ document.addEventListener('DOMContentLoaded', function() {
         var imgHtml = imgUrl ? '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;background:transparent;border-radius:4px;">' : '<i class="fa-solid fa-glasses"></i>';
         html += '<div class="item-row"><div class="item-icon" style="padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">'+imgHtml+'</div><div style="flex:1;"><div style="font-weight:700;font-size:14px;">'+item.name+'</div><div style="font-size:12px;color:var(--text-light);">'+item.lens+' &times; '+item.qty+'</div></div><div style="font-weight:700;color:var(--pink-primary);">'+item.price+'</div></div>';
     });
-    var addonPrice = order.addonPrice || (si.addonPrice||0);
-    var addonLabel = si.addonChoice || '高級皮質收納盒';
+    if (addonPrice > 0) {
+        html += '<div class="item-row"><div class="item-icon" style="padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:white;"><img src="'+addonImage+'" style="width:100%;height:100%;object-fit:cover;background:transparent;border-radius:4px;"></div><div style="flex:1;"><div style="font-weight:700;font-size:14px;">'+addonLabel+'</div><div style="font-size:12px;color:var(--text-light);">加購商品 &times; 1</div></div><div style="font-weight:700;color:var(--pink-primary);">+NT$'+addonPrice.toLocaleString()+'</div></div>';
+    }
     html += '</div><div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px;">';
     html += '<div class="detail-row"><span>鏡框小計</span><span>NT$'+(order.subtotal - (order.lensPrice||0) - addonPrice).toLocaleString()+'</span></div>';
     if ((order.lensPrice||0) > 0) html += '<div class="detail-row"><span>鏡片費用</span><span>+NT$'+(order.lensPrice).toLocaleString()+'</span></div>';
