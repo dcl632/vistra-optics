@@ -176,19 +176,27 @@ function doLogout() {
 }
 
 // Place order
-function placeOrder(shippingInfo) {
+function placeOrder(shippingInfo, applyEmpDiscount) {
     if (cart.length === 0) {
         showToast('購物車是空的', 'error');
         return null;
     }
     let total = getCartTotal();
     let discount = getDiscount(total);
+    let finalTotal = total - discount;
+    
+    if (applyEmpDiscount) {
+        let empSave = Math.round(finalTotal * 0.2);
+        discount += empSave;
+        finalTotal -= empSave;
+    }
+
     let order = {
         id: 'OD' + Date.now().toString(36).toUpperCase(),
         items: JSON.parse(JSON.stringify(cart)),
         subtotal: total,
         discount: discount,
-        total: total - discount,
+        total: finalTotal,
         shipping: shippingInfo,
         status: '處理中',
         createdAt: new Date().toISOString(),

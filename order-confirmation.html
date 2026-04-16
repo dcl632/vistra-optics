@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     html += '<div class="item-row" style="color:var(--text-light);"><span>小計</span><span>NT$'+order.subtotal.toLocaleString()+'</span></div>';
     if (order.discount > 0) {
-        html += '<div class="item-row" style="color:#4CAF50;"><span>滿額折扣</span><span>-NT$'+order.discount+'</span></div>';
+        html += '<div class="item-row" style="color:#4CAF50;"><span>折扣優惠</span><span>-NT$'+order.discount+'</span></div>';
     }
     html += '<div class="order-total-row"><span>合計</span><span class="val">NT$'+order.total.toLocaleString()+'</span></div>';
     html += '</div>';

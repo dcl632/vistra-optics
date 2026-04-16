@@ -124,7 +124,17 @@
 
             </form>
         </div>
-        <div class="order-summary-side" id="orderSummary"></div>
+        <div class="order-summary-side">
+            <div id="orderSummary"></div>
+            <div style="background:var(--bg-light); border-radius:var(--radius-lg); padding:24px; margin-top:20px;">
+                <h4 style="margin-bottom:12px; font-size:14px; font-weight:700;">優惠代碼</h4>
+                <div style="display:flex; gap:8px;">
+                    <input type="text" id="promoInput" class="form-input" placeholder="有員工密碼或優惠碼嗎？" style="flex:1; border:1px solid var(--border-color);">
+                    <button type="button" class="btn btn-outline" onclick="applyPromo()">套用</button>
+                </div>
+                <div id="promoMsg" style="font-size:13px; margin-top:8px; color:var(--pink-primary); display:none;"></div>
+            </div>
+        </div>
     </div>
 </div>
 </main>
@@ -159,10 +169,32 @@ function onPaymentChange(radio) {
     if (ccFields) ccFields.style.display = radio.value === 'credit' ? 'block' : 'none';
     if (ppBox) ppBox.style.display = radio.value === 'paypal' ? 'block' : 'none';
 }
+var employeeDiscountActive = false;
+
+function applyPromo() {
+    var code = document.getElementById('promoInput').value.trim();
+    var msg = document.getElementById('promoMsg');
+    if(code === '999723') {
+        employeeDiscountActive = true;
+        msg.textContent = '✅ 已套用員工 8 折優惠！';
+        msg.style.color = '#4CAF50';
+        msg.style.display = 'block';
+        renderSummary();
+    } else {
+        employeeDiscountActive = false;
+        msg.textContent = '❌ 無效的優惠代碼';
+        msg.style.color = 'var(--pink-primary)';
+        msg.style.display = 'block';
+        renderSummary();
+    }
+}
+
 function renderSummary() {
     var el = document.getElementById('orderSummary');
     var total = getCartTotal();
     var disc = getDiscount(total);
+    var targetTotal = total - disc;
+    
     var html = '<h3>訂單摘要</h3>';
     cart.forEach(function(item) {
         var imgUrl = '';
@@ -182,8 +214,15 @@ function renderSummary() {
     });
     html += '<div style="margin-top:16px;"><div class="summary-row"><span>小計</span><span>NT$'+total.toLocaleString()+'</span></div>';
     if (disc > 0) html += '<div class="summary-row"><span>滿額折扣</span><span class="discount">-NT$'+disc+'</span></div>';
+    
+    if (employeeDiscountActive) {
+        var empSave = Math.round(targetTotal * 0.2);
+        targetTotal -= empSave;
+        html += '<div class="summary-row" style="color:#4CAF50;"><span>員工優惠 (8折)</span><span>-NT$'+empSave.toLocaleString()+'</span></div>';
+    }
+    
     html += '<div class="summary-row"><span>運費</span><span>免運費</span></div>';
-    html += '<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+(total-disc).toLocaleString()+'</span></div></div>';
+    html += '<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+targetTotal.toLocaleString()+'</span></div></div>';
     el.innerHTML = html;
 }
 function handleCheckout(e) {
@@ -199,7 +238,7 @@ function handleCheckout(e) {
         method: document.querySelector('input[name=shipping]:checked').value,
         payment: document.querySelector('input[name=payment]:checked').value
     };
-    var order = placeOrder(shipping);
+    var order = placeOrder(shipping, typeof employeeDiscountActive !== 'undefined' ? employeeDiscountActive : false);
     if (order) {
         localStorage.setItem('vistra_last_order', JSON.stringify(order));
         location.href = 'order-confirmation.html';
