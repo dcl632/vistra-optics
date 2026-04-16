@@ -187,7 +187,7 @@ function placeOrder(shippingInfo, applyEmpDiscount) {
     let finalTotal = subtotal - discount + SHIPPING;
     
     if (applyEmpDiscount) {
-        let empSave = Math.round(finalTotal * 0.25); // 7.5折 (25% off)
+        let empSave = Math.round(finalTotal * 0.35); // 6.5折 (35% off)
         discount += empSave;
         finalTotal -= empSave;
     }

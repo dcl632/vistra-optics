@@ -143,9 +143,7 @@
                         </label>
                         <label class="payment-option" id="opt-paypal">
                             <input type="radio" name="payment" value="paypal" onchange="onPaymentChange(this)">
-                            <div class="pay-icon" style="width:50px;background:transparent;padding:0;display:flex;align-items:center;justify-content:flex-start;">
-                                <img src="images/paypal-logo.svg?v=2" style="height:22px;width:auto;object-fit:contain;display:block;">
-                            </div>
+                            <div class="pay-icon"><i class="fa-brands fa-paypal"></i></div>
                             <div><div class="pay-name">PayPal</div><div class="pay-desc">全球通用，安全付款</div></div>
                         </label>
                         <label class="payment-option" id="opt-atm">
@@ -252,7 +250,7 @@ function applyPromo() {
     var msg = document.getElementById('promoMsg');
     if(code === '999723') {
         employeeDiscountActive = true;
-        msg.textContent = '✅ 已套用員工 7.5 折優惠！';
+        msg.textContent = '✅ 已套用員工 6.5 折優惠！';
         msg.style.color = '#4CAF50';
         msg.style.display = 'block';
         renderSummary();
@@ -302,9 +300,9 @@ function renderSummary() {
     html += '<div class="summary-row"><span>運費</span><span>NT$'+SHIPPING+'</span></div>';
     html += '<div class="summary-row" style="color:#4CAF50;"><span>運費折抵</span><span>-NT$'+SHIPPING+'</span></div>';
     if (employeeDiscountActive) {
-        var empSave = Math.round(targetTotal * 0.25);
+        var empSave = Math.round(targetTotal * 0.35);
         targetTotal -= empSave;
-        html += '<div class="summary-row" style="color:#4CAF50;"><span>員工優惠 (75折)</span><span>-NT$'+empSave.toLocaleString()+'</span></div>';
+        html += '<div class="summary-row" style="color:#4CAF50;"><span>員工優惠 (6.5折)</span><span>-NT$'+empSave.toLocaleString()+'</span></div>';
     }
     html += '<div class="summary-row total"><span>合計</span><span class="summary-val">NT$'+targetTotal.toLocaleString()+'</span></div>';
     html += '</div>';

@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         atm:'ATM轉帳',
         linepay:'LINE Pay',
         cod:'貨到付款',
-        paypal:'<span style="display:inline-flex;align-items:center;gap:6px;line-height:1;"><img src="images/paypal-logo.svg" height="18" style="object-fit:contain;vertical-align:middle;"> <span style="font-weight:700;color:#003087;">PayPal</span></span>'
+        paypal:'PayPal'
     };
     function normalizePaymentKey(v) {
         return String(v || '').toLowerCase().replace(/[^a-z]/g, '');
